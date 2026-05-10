@@ -1,1 +1,2 @@
-# Add the SHA-256 checksum for data/raw/test.json here.
+de6848f68b3b67ef3e3626d973b139dbd774bda407970deadc1977af28d0286c  train_data.json
+a0fc1d56709259cc6e927396ebaf20fc15392ec21f98460176d64fef226687c7  test_data.json

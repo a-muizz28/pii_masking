@@ -1,0 +1,14 @@
+{
+  "total_examples": 28516,
+  "tag_distribution": {
+    "O": 639055,
+    "B-PER": 40264,
+    "I-PER": 29466
+  },
+  "token_length_stats": {
+    "min": 2,
+    "max": 163,
+    "mean": 24.9
+  },
+  "bio_violations": 6
+}

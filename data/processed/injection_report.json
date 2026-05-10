@@ -1,0 +1,72 @@
+{
+  "train_val": {
+    "split": "train",
+    "total_examples": 28516,
+    "candidates": 28516,
+    "injected": 17109,
+    "injection_rate_actual": 0.5999789591808108,
+    "single_token_count": 15418,
+    "multi_token_count": 1691,
+    "context_distribution": {
+      "post_name": 8436,
+      "parenthetical": 5205,
+      "contact_tail": 3468
+    },
+    "email_domain_distribution": {
+      "yahoo.com": 2254,
+      "protonmail.com": 2291,
+      "acme.com": 989,
+      "outlook.com": 2245,
+      "gmail.com": 3122,
+      "techcorp.com": 948,
+      "hotmail.com": 2270,
+      "meridian.org": 945,
+      "globalinc.com": 1017,
+      "bluewave.io": 1028
+    },
+    "pattern_distribution": {
+      "firstname_lastname_num": 2295,
+      "firstname_dot_lastname": 4704,
+      "nickname_number": 2395,
+      "firstinitial_lastname": 3794,
+      "support_at": 498,
+      "info_at": 650,
+      "firstname_only": 2274,
+      "contact_at": 499
+    }
+  },
+  "test": {
+    "split": "test",
+    "total_examples": 3650,
+    "candidates": 3650,
+    "injected": 2190,
+    "injection_rate_actual": 0.6,
+    "single_token_count": 1967,
+    "multi_token_count": 223,
+    "context_distribution": {
+      "post_name": 1125,
+      "parenthetical": 667,
+      "contact_tail": 398
+    },
+    "email_domain_distribution": {
+      "zoho.com": 301,
+      "tutanota.com": 296,
+      "icloud.com": 370,
+      "fastmail.com": 278,
+      "veridian.io": 124,
+      "stratford.org": 138,
+      "crestline.co": 136,
+      "pm.me": 289,
+      "omnicorp.net": 133,
+      "nexigen.com": 125
+    },
+    "pattern_distribution": {
+      "firstname_underscore_lastname": 571,
+      "initials_number": 458,
+      "first_dot_last_initial": 420,
+      "lastname_firstname": 488,
+      "admin_at": 121,
+      "hello_at": 132
+    }
+  }
+}

@@ -1,12 +1,46 @@
 {
-  "email_patterns": [
-    "{first}.{last}@{domain}",
-    "{first}_{last}@{domain}",
-    "{first}{last}@{domain}"
-  ],
-  "domain_pools": [
-    "example.com",
-    "mail.com",
-    "company.org"
-  ]
+  "train": {
+    "injection_rate": 0.6,
+    "single_token_ratio": 0.9,
+    "multi_token_ratio": 0.1,
+    "seed": 42,
+    "personal_domains": ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "protonmail.com"],
+    "corporate_domains": ["acme.com", "techcorp.com", "globalinc.com", "meridian.org", "bluewave.io"],
+    "patterns": [
+      {"name": "firstname_dot_lastname", "weight": 0.30, "template": "{first}.{last}"},
+      {"name": "firstinitial_lastname",  "weight": 0.25, "template": "{f}{last}"},
+      {"name": "firstname_only",         "weight": 0.15, "template": "{first}"},
+      {"name": "nickname_number",        "weight": 0.15, "template": "{first}{year}"},
+      {"name": "firstname_lastname_num", "weight": 0.15, "template": "{first}{last}{n}"}
+    ],
+    "role_patterns": [
+      {"name": "info_at",     "weight": 0.4, "local": "info"},
+      {"name": "contact_at",  "weight": 0.3, "local": "contact"},
+      {"name": "support_at",  "weight": 0.3, "local": "support"}
+    ],
+    "role_pattern_fraction": 0.10,
+    "insertion_contexts": ["post_name", "parenthetical", "contact_tail"],
+    "context_weights": [0.50, 0.30, 0.20]
+  },
+  "test": {
+    "injection_rate": 0.6,
+    "single_token_ratio": 0.9,
+    "multi_token_ratio": 0.1,
+    "seed": 123,
+    "personal_domains": ["icloud.com", "tutanota.com", "fastmail.com", "zoho.com", "pm.me"],
+    "corporate_domains": ["nexigen.com", "veridian.io", "omnicorp.net", "stratford.org", "crestline.co"],
+    "patterns": [
+      {"name": "firstname_underscore_lastname", "weight": 0.30, "template": "{first}_{last}"},
+      {"name": "lastname_firstname",            "weight": 0.25, "template": "{last}.{first}"},
+      {"name": "first_dot_last_initial",        "weight": 0.20, "template": "{first}.{l}"},
+      {"name": "initials_number",               "weight": 0.25, "template": "{f}{l}{n}"}
+    ],
+    "role_patterns": [
+      {"name": "admin_at",  "weight": 0.5, "local": "admin"},
+      {"name": "hello_at",  "weight": 0.5, "local": "hello"}
+    ],
+    "role_pattern_fraction": 0.10,
+    "insertion_contexts": ["post_name", "parenthetical", "contact_tail"],
+    "context_weights": [0.50, 0.30, 0.20]
+  }
 }

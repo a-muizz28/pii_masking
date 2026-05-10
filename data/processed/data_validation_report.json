@@ -1,0 +1,94 @@
+{
+  "train": {
+    "source_file": "C:\\Users\\Abdul Muizz\\Desktop\\Securiti Internship Task\\pii_masking\\data\\raw\\train_data.json",
+    "total_examples": 28516,
+    "valid_examples": 28516,
+    "invalid_examples": 0,
+    "bio_violations_fixed": 6,
+    "tag_distribution": {
+      "O": 639055,
+      "B-PER": 40264,
+      "I-PER": 29466
+    },
+    "length_stats": {
+      "min": 2,
+      "max": 163,
+      "mean": 24.86,
+      "median": 23.0,
+      "p95": 47.0
+    },
+    "per_span_counts": {
+      "0_per": 0,
+      "1_per": 21572,
+      "2plus_per": 6944
+    },
+    "email_span_count": 0,
+    "invalid_indices": [],
+    "fix_log": [
+      {
+        "idx": 3495,
+        "fix_description": "Converted orphan I-PER at position 35 to B-PER"
+      },
+      {
+        "idx": 6222,
+        "fix_description": "Converted orphan I-PER at position 4 to B-PER"
+      },
+      {
+        "idx": 8437,
+        "fix_description": "Converted orphan I-PER at position 2 to B-PER"
+      },
+      {
+        "idx": 20010,
+        "fix_description": "Converted orphan I-PER at position 2 to B-PER"
+      },
+      {
+        "idx": 22598,
+        "fix_description": "Converted orphan I-PER at position 36 to B-PER"
+      },
+      {
+        "idx": 27842,
+        "fix_description": "Converted orphan I-PER at position 9 to B-PER"
+      }
+    ]
+  },
+  "test": {
+    "source_file": "C:\\Users\\Abdul Muizz\\Desktop\\Securiti Internship Task\\pii_masking\\data\\raw\\test_data.json",
+    "total_examples": 3650,
+    "valid_examples": 3650,
+    "invalid_examples": 0,
+    "bio_violations_fixed": 3,
+    "tag_distribution": {
+      "O": 77866,
+      "B-PER": 5207,
+      "I-PER": 3959
+    },
+    "length_stats": {
+      "min": 3,
+      "max": 97,
+      "mean": 23.84,
+      "median": 22.0,
+      "p95": 46.0
+    },
+    "per_span_counts": {
+      "0_per": 0,
+      "1_per": 2701,
+      "2plus_per": 949
+    },
+    "email_span_count": 0,
+    "invalid_indices": [],
+    "fix_log": [
+      {
+        "idx": 1730,
+        "fix_description": "Converted orphan I-PER at position 21 to B-PER"
+      },
+      {
+        "idx": 2135,
+        "fix_description": "Converted orphan I-PER at position 5 to B-PER"
+      },
+      {
+        "idx": 2504,
+        "fix_description": "Converted orphan I-PER at position 25 to B-PER"
+      }
+    ]
+  }
+}

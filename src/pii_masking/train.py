@@ -1,0 +1,2 @@
+"""Encoder model training loop."""
+

@@ -1,0 +1,5 @@
+model_name: distilbert-base-uncased
+task: token-classification
+batch_size: 16
+learning_rate: 3e-5
+epochs: 3

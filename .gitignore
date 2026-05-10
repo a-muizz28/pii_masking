@@ -1,0 +1,10 @@
+data/raw/
+models/
+predictions/
+errors/
+*.gguf
+*.parquet
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc

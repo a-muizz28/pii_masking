@@ -1,0 +1,12 @@
+{
+  "email_patterns": [
+    "{first}.{last}@{domain}",
+    "{first}_{last}@{domain}",
+    "{first}{last}@{domain}"
+  ],
+  "domain_pools": [
+    "example.com",
+    "mail.com",
+    "company.org"
+  ]
+}

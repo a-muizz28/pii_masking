@@ -1,0 +1,3 @@
+template_name: C
+system_prompt: Detect and mask names and email addresses.
+temperature: 0.0

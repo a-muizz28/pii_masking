@@ -1,0 +1,1 @@
+# Add the SHA-256 checksum for data/raw/test.json here.

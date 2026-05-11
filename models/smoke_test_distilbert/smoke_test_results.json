@@ -1,0 +1,21 @@
+{
+  "model": "distilbert-base-cased",
+  "epochs": 1,
+  "train_subset": 2500,
+  "val_subset": 500,
+  "smoke_seq_len": 64,
+  "note": "CPU smoke test with 2500-example subset and 64-token truncation. Full 24k dataset + 256 tokens for Day 3 GPU run.",
+  "train_loss": 0.03375,
+  "eval_metrics": {
+    "eval_loss": 0.02971,
+    "eval_overall_precision": 0.9347,
+    "eval_overall_recall": 0.9611,
+    "eval_overall_f1": 0.9477,
+    "eval_per_f1": 0.9346,
+    "eval_email_f1": 0.9813,
+    "eval_runtime": 98.11,
+    "eval_samples_per_second": 5.096,
+    "eval_steps_per_second": 0.326,
+    "epoch": 1.0
+  }
+}

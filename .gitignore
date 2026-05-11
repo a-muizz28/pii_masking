@@ -1,29 +1,40 @@
+# --- Python env ---
 .venv/
 .env
 .python-version.local
 
-models/
+# --- Large model binaries (keep results JSON) ---
 *.gguf
 *.bin
 *.safetensors
+*.pt
+*.pth
+models/**/checkpoint-*/
+models/**/__pycache__/
 
+# --- Large data artifacts (regenerable from scripts) ---
 *.parquet
-predictions/
-errors/
+data/raw/*
+!data/raw/.gitkeep
+data/processed/hf_dataset/
+
+# --- Build / cache ---
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.egg-info/
 dist/
-
 build/
 *.egg
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
 .cache/
+predictions/
+errors/
 
+# --- IDE / OS ---
 .vscode/
 .idea/
 *.swp

@@ -1,10 +1,12 @@
 #!/bin/bash
 set -e
-VENV_PATH="$(dirname "$(dirname "$(readlink -f "$0")")")/.venv"
-source "$VENV_PATH/bin/activate"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+export PATH="$PATH:$HOME/.local/bin"
+cd "$PROJECT_ROOT"
 
 KAGGLE_USER=$(python3 -c "import json,os; print(json.load(open(os.path.expanduser('~/.kaggle/kaggle.json')))['username'])")
-KERNEL_ID="$KAGGLE_USER/pii-masking-day3-training"
+KERNEL_ID="$KAGGLE_USER/pii-masking-day-3-training"
 
 echo "=== Pulling Day 3 Results ==="
 echo "Kernel: $KERNEL_ID"

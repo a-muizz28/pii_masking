@@ -1,0 +1,31 @@
+{
+  "run_label": "deberta_seed7",
+  "model_name": "microsoft/deberta-v3-small",
+  "seed": 7,
+  "val_metrics": {
+    "eval_overall_f1": 0.9518542236711883,
+    "eval_per_f1": 0.9320839207231114,
+    "eval_email_f1": 0.9984368894099258,
+    "eval_token_fpr": 0.007358021589512128,
+    "eval_token_fnr": 0.011610578527102471,
+    "eval_loss": 0.038421630859375,
+    "eval_runtime": 16.0928,
+    "eval_samples_per_second": 265.834,
+    "eval_steps_per_second": 8.327,
+    "epoch": 5.0
+  },
+  "test_metrics": {
+    "eval_overall_f1": 0.9359870898332437,
+    "eval_per_f1": 0.9220047732696899,
+    "eval_email_f1": 0.9692972481237208,
+    "eval_token_fpr": 0.008655074718071218,
+    "eval_token_fnr": 0.014625717901294655,
+    "eval_loss": 0.049896240234375,
+    "eval_runtime": 13.7794,
+    "eval_samples_per_second": 264.888,
+    "eval_steps_per_second": 8.346,
+    "epoch": 5.0
+  },
+  "train_loss": 0.14847947259153862,
+  "train_steps": 7575
+}

@@ -3,7 +3,7 @@
 .env
 .python-version.local
 
-# --- Large model binaries (keep results JSON) ---
+# --- Large model binaries (keep result JSONs and model configs) ---
 *.gguf
 *.bin
 *.safetensors
@@ -11,12 +11,14 @@
 *.pth
 models/**/checkpoint-*/
 models/**/__pycache__/
+models/smoke_test_distilbert/
 
 # --- Large data artifacts (regenerable from scripts) ---
 *.parquet
 data/raw/*
 !data/raw/.gitkeep
 data/processed/hf_dataset/
+kaggle/dataset_upload/hf_dataset/
 
 # --- Build / cache ---
 __pycache__/
@@ -41,3 +43,4 @@ errors/
 *.swo
 .DS_Store
 Thumbs.db
+

@@ -1,8 +1,11 @@
 #!/bin/bash
 set -e
 
-VENV_PATH="$(dirname "$(dirname "$(readlink -f "$0")")")/.venv"
-source "$VENV_PATH/bin/activate"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+# Ensure kaggle is on PATH (WSL installs to ~/.local/bin)
+export PATH="$PATH:$HOME/.local/bin"
 
 echo "=== Day 3 Kaggle Push ==="
 echo "Using kaggle user: $(python3 -c "import json,os; print(json.load(open(os.path.expanduser('~/.kaggle/kaggle.json')))['username'])")"
@@ -10,25 +13,25 @@ echo ""
 
 # Step 1: Upload/update the dataset
 echo "[1/3] Uploading processed dataset to Kaggle..."
-cd "$(dirname "$0")/dataset_upload"
+cd "$SCRIPT_DIR/dataset_upload"
 
-if kaggle datasets list --mine 2>/dev/null | grep -q "pii-masking-processed-dataset"; then
+if kaggle datasets list --user abdulmuizz28 2>/dev/null | grep -q "pii-masking-processed-dataset"; then
     echo "  Dataset exists — creating new version..."
     kaggle datasets version -m "Day 2 output $(date +%Y-%m-%d)" --dir-mode zip
 else
     echo "  First upload — creating dataset..."
     kaggle datasets create --dir-mode zip
 fi
-cd ../..
+cd "$PROJECT_ROOT"
 echo "  Dataset upload queued. Waiting 30s for Kaggle to process..."
 sleep 30
 echo ""
 
 # Step 2: Push the kernel
 echo "[2/3] Pushing training kernel..."
-cd kaggle
+cd "$SCRIPT_DIR"
 kaggle kernels push
-cd ..
+cd "$PROJECT_ROOT"
 echo "  Kernel pushed. Training will start shortly on Kaggle's T4 GPU."
 echo ""
 

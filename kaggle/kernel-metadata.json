@@ -1,0 +1,13 @@
+{
+  "id": "abdulmuizz28/pii-masking-day3-training",
+  "title": "PII Masking Day 3 Training",
+  "code_file": "training_kernel.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_internet": true,
+  "dataset_sources": ["abdulmuizz28/pii-masking-processed-dataset"],
+  "competition_sources": [],
+  "kernel_sources": []
+}

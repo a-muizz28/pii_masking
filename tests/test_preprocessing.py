@@ -3,7 +3,7 @@
 import pytest
 from transformers import AutoTokenizer
 
-from pii_masking.preprocessing import tokenize_and_align_labels
+from pii_masking.day2_preprocessing import tokenize_and_align_labels
 
 TOKENIZER_NAME = "distilbert-base-cased"
 LABEL2ID = {"O": 0, "B-PER": 1, "I-PER": 2, "B-EMAIL": 3, "I-EMAIL": 4}

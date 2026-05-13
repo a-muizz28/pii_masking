@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from pii_masking import data as data_mod
+from pii_masking import day1_data as data_mod
 
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"

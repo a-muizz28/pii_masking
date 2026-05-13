@@ -1,4 +1,4 @@
-"""Tokenization and BIO label alignment helpers."""
+"""Day 2 tokenization and BIO label alignment helpers."""
 
 from __future__ import annotations
 

@@ -10,8 +10,8 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from pii_masking import data as data_mod
-from pii_masking import injection as inj_mod
+from pii_masking import day1_data as data_mod
+from pii_masking import day1_injection as inj_mod
 
 PROCESSED_DIR = Path(__file__).resolve().parents[1] / "data" / "processed"
 CONFIG_PATH = Path(__file__).resolve().parents[1] / "data" / "injection_config.json"
@@ -47,7 +47,7 @@ def test_bio_well_formedness_after_injection() -> None:
     """50 random injected train examples must have no orphan I-X tags."""
     path = PROCESSED_DIR / "train_with_emails.parquet"
     if not path.exists():
-        pytest.skip("train_with_emails.parquet not found — run 02_inject_emails.py first")
+        pytest.skip("train_with_emails.parquet not found - run 01_inject_emails.py first")
 
     examples = _load_parquet_examples(path)
     rng = np.random.default_rng(42)

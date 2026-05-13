@@ -1,0 +1,17 @@
+{
+  "span_f1_overall": 0.14285714285714285,
+  "span_f1_per": 0.2857142857142857,
+  "span_f1_email": 0.0,
+  "precision_per": 0.16666666666666666,
+  "recall_per": 1.0,
+  "precision_email": 0.0,
+  "recall_email": 0.0,
+  "token_fpr_per": 0.09259259259259259,
+  "token_fnr_per": 0.0,
+  "token_fpr_email": 0.0,
+  "token_fnr_email": 1.0,
+  "redaction_leak_rate": 0.5,
+  "parse_failure_rate": 0.0,
+  "n_sentences": 1,
+  "n_parse_failures": 0
+}

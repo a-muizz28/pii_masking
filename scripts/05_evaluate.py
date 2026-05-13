@@ -1,9 +1,9 @@
-from pii_masking import metrics
+from pii_masking import day4_evaluate
 
 
 def main() -> None:
     print("Evaluate predictions here.")
-    _ = metrics
+    _ = day4_evaluate
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-"""Synthetic email generation and injection utilities."""
+"""Day 1 synthetic email generation and injection utilities."""
 
 import copy
 import logging

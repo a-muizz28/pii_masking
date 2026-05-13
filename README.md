@@ -12,16 +12,45 @@ This repository is structured for:
 - LLM inference and masking
 - metrics and error analysis
 
+## Numbering Convention
+
+The numeric prefixes show the order in which the project stages were created and executed. Matching `src/pii_masking/day*_*.py` modules contain the reusable implementation used by the numbered scripts and notebooks.
+
+| Stage | Runnable / notebook | Uses source module(s) | Main output |
+|---|---|---|---|
+| Day 1 | `notebooks/01_day1_overview.ipynb`, `scripts/01_validate_data.py` | `src/pii_masking/day1_data.py` | clean parquet splits, validation report, checksums, token-length histogram |
+| Day 1 | `notebooks/01_day1_overview.ipynb`, `scripts/01_inject_emails.py` | `src/pii_masking/day1_data.py`, `src/pii_masking/day1_injection.py` | injected train/validation/test parquet files, injection report |
+| Day 2 | `notebooks/02_eda.ipynb`, `scripts/02_preprocess.py` | `src/pii_masking/day2_preprocessing.py` | `data/processed/hf_dataset/` |
+| Day 2 | `notebooks/02_eda.ipynb`, `scripts/02_smoke_test.py` | `src/pii_masking/day2_metrics.py` | `models/smoke_test_distilbert/smoke_test_results.json` |
+| Day 3 | `notebooks/03_encoder_training.ipynb` | Kaggle notebook code + Day 2 dataset | encoder checkpoints, `results/day3_encoder_training/training_summary.json` |
+| Day 4 | `scripts/04_llm_inference.py`, `notebooks/04_llm_inference.ipynb` | `src/pii_masking/day4_llm_inference.py`, `src/pii_masking/day4_evaluate.py` | LLaMA predictions/cache, `results/day4_llm_inference/llm_metrics.json`, Day 4 summary |
+| Day 5 | `src/pii_masking/day5_masking.py` | placeholder | planned masking/leak-check routines |
+| Day 6 | `notebooks/06_error_analysis.ipynb`, `scripts/06_error_analysis.py`, `src/pii_masking/day6_error_analysis.py` | placeholder | planned error analysis |
+
+`scripts/` are command-line entrypoints. `src/pii_masking/` contains reusable implementation logic. `notebooks/` documents EDA artifacts and holds Kaggle/GPU experiments. `tests/` validates the reusable source modules.
+
 ## How To Run
 
 ```bash
 python scripts/01_validate_data.py
-python scripts/02_inject_emails.py
-python scripts/03_train_encoder.py
-python scripts/04_run_llm.py
-python scripts/05_evaluate.py
-python scripts/06_error_analysis.py
+python scripts/01_inject_emails.py
+python scripts/02_preprocess.py
+python scripts/02_smoke_test.py
+python scripts/04_llm_inference.py
 ```
+
+Encoder training is implemented in `notebooks/03_encoder_training.ipynb` for Kaggle/GPU execution. Add the public Kaggle notebook URL there after publishing. `scripts/05_evaluate.py` and `scripts/06_error_analysis.py` are currently placeholders.
+
+## Step-By-Step Flow
+
+1. Run `scripts/01_validate_data.py` to validate raw WikiNeural JSON, repair BIO issues, split train/validation, and write clean parquet files.
+2. Run `scripts/01_inject_emails.py` to inject synthetic email entities into the clean splits using `data/injection_config.json`.
+3. Run `scripts/02_preprocess.py` to tokenize injected splits and align labels using Strategy B.
+4. Run `scripts/02_smoke_test.py` locally to confirm the encoder pipeline works on a small DistilBERT subset before expensive training.
+5. Run `notebooks/03_encoder_training.ipynb` on Kaggle/GPU for the full DeBERTa/DistilBERT encoder experiments.
+6. Run `scripts/04_llm_inference.py` locally or `notebooks/04_llm_inference.ipynb` on Kaggle/GPU for the LLaMA zero-shot pipeline and Day 4 comparison against encoder metrics.
+7. Use `results/day3_encoder_training/training_summary.json` and `results/day4_llm_inference/llm_metrics.json` as the main comparison artifacts.
+8. Use `notebooks/06_error_analysis.ipynb` for the planned Day 6 review of false positives, false negatives, parse failures, and leakage cases.
 
 ## Key Results
 
@@ -31,6 +60,8 @@ Results will be written to:
 - `errors/`
 - `models/`
 - `reports/figures/`
+- `results/day3_encoder_training/training_summary.json`
+- `results/day4_llm_inference/llm_metrics.json`
 
 ## Locked Design Decisions
 
@@ -53,6 +84,7 @@ Results will be written to:
 
 ```bash
 python scripts/01_validate_data.py   # produces data/processed/*.parquet + report
-python scripts/02_inject_emails.py   # produces train/val/test with emails
+python scripts/01_inject_emails.py   # produces train/val/test with emails
+python scripts/02_preprocess.py      # produces data/processed/hf_dataset
 pytest tests/                        # must all pass before proceeding
 ```

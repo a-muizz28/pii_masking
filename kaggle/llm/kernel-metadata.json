@@ -1,7 +1,7 @@
 {
-  "id": "abdulmuizz28/pii-masking-day-3-training",
-  "title": "PII Masking Day 3 Training",
-  "code_file": "../notebooks/03_training.ipynb",
+  "id": "abdulmuizz28/pii-masking-day-4-llm-inference",
+  "title": "PII Masking Day 4 LLM Inference",
+  "code_file": "04_llm_inference.ipynb",
   "language": "python",
   "kernel_type": "notebook",
   "is_private": true,

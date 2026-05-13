@@ -1,9 +1,9 @@
-from pii_masking import error_analysis
+from pii_masking import day6_error_analysis
 
 
 def main() -> None:
     print("Run error analysis here.")
-    _ = error_analysis
+    _ = day6_error_analysis
 
 
 if __name__ == "__main__":

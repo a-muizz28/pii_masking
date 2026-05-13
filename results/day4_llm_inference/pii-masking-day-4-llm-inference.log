@@ -1,0 +1,189 @@
+[{"stream_name":"stderr","time":6.459311345,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.459394416,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.459401836,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.459405904,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.028302819,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.028354468,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.028360158,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.028364478,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":8.244479839,"data":"Installing llama-cpp-python without touching Kaggle base deps...\n"}
+,{"stream_name":"stdout","time":27.131888549,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 GB 971.8 kB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":27.33533542,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 GB 971.8 kB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":69.618527844,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 2.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":69.822592573,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 2.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":72.88994191,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.6/43.6 kB 1.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":73.092327321,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.6/43.6 kB 1.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":85.385918258,"data":"llama-cpp-python imported successfully\n"}
+,{"stream_name":"stdout","time":85.385963884,"data":"CUDA available: True\n"}
+,{"stream_name":"stdout","time":85.385971465,"data":"GPU: Tesla T4\n"}
+,{"stream_name":"stdout","time":85.944416694,"data":"Downloading Llama-3.2-1B-Instruct Q4_K_M GGUF...\n"}
+,{"stream_name":"stderr","time":86.135095398,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":86.135122452,"data":"\n"}
+,{"stream_name":"stderr","time":86.135129036,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":92.131887387,"data":"Downloaded to: /kaggle/working/models/llama/Llama-3.2-1B-Instruct-Q4_K_M.gguf\n"}
+,{"stream_name":"stdout","time":92.131941556,"data":"Size: 807.7 MB\n"}
+,{"stream_name":"stdout","time":93.565977842,"data":"Scanning /kaggle/input/ ...\n"}
+,{"stream_name":"stdout","time":93.566024333,"data":"  datasets/\n"}
+,{"stream_name":"stdout","time":93.566032564,"data":"    abdulmuizz28\n"}
+,{"stream_name":"stdout","time":93.566038426,"data":"\n"}
+,{"stream_name":"stdout","time":93.566056742,"data":"Detected parquet: None\n"}
+,{"stream_name":"stdout","time":93.566062364,"data":"Detected hf_dataset: /kaggle/input/datasets/abdulmuizz28/pii-masking-processed-dataset/hf_dataset\n"}
+,{"stream_name":"stdout","time":98.518728248,"data":"Loaded 3650 test records from HF DatasetDict.\n"}
+,{"stream_name":"stdout","time":98.518793687,"data":"Sample keys: ['tokens', 'ner_tags', 'sequence']\n"}
+,{"stream_name":"stdout","time":98.518800541,"data":"Sample tokens[:5]: ['This', 'Is', 'What', 'the', 'Truth']\n"}
+,{"stream_name":"stdout","time":98.51880578,"data":"Sample ner_tags[:5]: ['O', 'O', 'O', 'O', 'O']\n"}
+,{"stream_name":"stdout","time":98.518810775,"data":"Total records: 3650\n"}
+,{"stream_name":"stdout","time":98.552081956,"data":"LLMPIIPipeline defined.\n"}
+,{"stream_name":"stdout","time":99.963015032,"data":"Metric helpers defined.\n"}
+,{"stream_name":"stderr","time":101.071143117,"data":"llama_context: n_ctx_seq (2048) \u003c n_ctx_train (131072) -- the full capacity of the model will not be utilized\n"}
+,{"stream_name":"stderr","time":101.071175913,"data":"\n"}
+,{"stream_name":"stderr","time":101.071186914,"data":"llama_context: n_ctx_seq (2048) \u003c n_ctx_train (131072) -- the full capacity of the model will not be utilized\n"}
+,{"stream_name":"stdout","time":101.115006063,"data":"Pipeline initialized with n_gpu_layers=-1 (full T4 offload)\n"}
+,{"stream_name":"stdout","time":101.315476289,"data":"=== SMOKE TEST (3 sentences) ===\n"}
+,{"stream_name":"stdout","time":103.385467796,"data":"\n"}
+,{"stream_name":"stdout","time":103.385499858,"data":"--- Record 0 ---\n"}
+,{"stream_name":"stdout","time":103.385506157,"data":"Sentence: This Is What the Truth Feels Like \" was released on March 18 , 2016 , and debuted at number one on the \" Billboard \" 200 with 84,000 album-equivalent units sold in its first week , earning Stefani ( stefani_stefani@tutanota.com ) her first number-one album on the U.S. chart as a solo artist .\n"}
+,{"stream_name":"stdout","time":103.385513217,"data":"Prompt (last 300 chars): ...on March 18 , 2016 , and debuted at number one on the \" Billboard \" 200 with 84,000 album-equivalent units sold in its first week , earning Stefani ( stefani_stefani@tutanota.com ) her first number-one album on the U.S. chart as a solo artist .\n"}
+,{"stream_name":"stdout","time":103.385518814,"data":"\u003c|eot_id|\u003e\u003c|start_header_id|\u003eassistant\u003c|end_header_id|\u003e\n"}
+,{"stream_name":"stdout","time":103.385526125,"data":"Raw response: '\\n\\n{\"names\": [\"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"Stefani\", \"St'\n"}
+,{"stream_name":"stdout","time":103.385535646,"data":"Parse OK: True\n"}
+,{"stream_name":"stdout","time":103.385540263,"data":"Names: ['Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani', 'Stefani']\n"}
+,{"stream_name":"stdout","time":103.38556438,"data":"Emails: []\n"}
+,{"stream_name":"stdout","time":103.385568912,"data":"Predicted tags: ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B-PER', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']\n"}
+,{"stream_name":"stdout","time":103.385573081,"data":"Ground truth:   ['O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'B-PER', 'O', 'B-EMAIL', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']\n"}
+,{"stream_name":"stdout","time":103.658538705,"data":"\n"}
+,{"stream_name":"stdout","time":103.658572098,"data":"--- Record 1 ---\n"}
+,{"stream_name":"stdout","time":103.658577246,"data":"Sentence: Bragg ( bragg.bragg@zoho.com ) diffraction is a consequence of interference between waves reflecting from different crystal planes .\n"}
+,{"stream_name":"stdout","time":103.658581297,"data":"Prompt (last 300 chars): ... sentence.\n"}
+,{"stream_name":"stdout","time":103.658584814,"data":"Return ONLY this JSON structure with no other text:\n"}
+,{"stream_name":"stdout","time":103.658588411,"data":"{\"names\": [\"...\"], \"emails\": [\"...\"]}\n"}
+,{"stream_name":"stdout","time":103.658591986,"data":"\n"}
+,{"stream_name":"stdout","time":103.658596115,"data":"Sentence: Bragg ( bragg.bragg@zoho.com ) diffraction is a consequence of interference between waves reflecting from different crystal planes .\n"}
+,{"stream_name":"stdout","time":103.658600261,"data":"\u003c|eot_id|\u003e\u003c|start_header_id|\u003eassistant\u003c|end_header_id|\u003e\n"}
+,{"stream_name":"stdout","time":103.658604621,"data":"Raw response: '\\n\\n{\"names\": [\"Bragg\", \"bragg.bragg@zoho.com\"], \"emails\": [\"diffraction\", \"bragg.bragg@zoho.com\", \"diffraction\", \"bragg.bragg@zoho.com\"]}'\n"}
+,{"stream_name":"stdout","time":103.658609613,"data":"Parse OK: True\n"}
+,{"stream_name":"stdout","time":103.65861318,"data":"Names: ['Bragg', 'bragg.bragg@zoho.com']\n"}
+,{"stream_name":"stdout","time":103.658616665,"data":"Emails: ['diffraction', 'bragg.bragg@zoho.com', 'diffraction', 'bragg.bragg@zoho.com']\n"}
+,{"stream_name":"stdout","time":103.658620336,"data":"Predicted tags: ['B-PER', 'O', 'B-EMAIL', 'O', 'B-EMAIL', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']\n"}
+,{"stream_name":"stdout","time":103.658623753,"data":"Ground truth:   ['B-PER', 'O', 'B-EMAIL', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O']\n"}
+,{"stream_name":"stdout","time":103.658627124,"data":"\n"}
+,{"stream_name":"stdout","time":103.658630157,"data":"--- Record 2 ---\n"}
+,{"stream_name":"stdout","time":103.658633592,"data":"Sentence: Wendy runs after Stan , calling his name , leaving Cartman , cartman.c@icloud.com completely alone .\n"}
+,{"stream_name":"stdout","time":103.658637067,"data":"Prompt (last 300 chars): ...email addresses in the following sentence.\n"}
+,{"stream_name":"stdout","time":103.658640488,"data":"Return ONLY this JSON structure with no other text:\n"}
+,{"stream_name":"stdout","time":103.658643888,"data":"{\"names\": [\"...\"], \"emails\": [\"...\"]}\n"}
+,{"stream_name":"stdout","time":103.658647841,"data":"\n"}
+,{"stream_name":"stdout","time":103.658651133,"data":"Sentence: Wendy runs after Stan , calling his name , leaving Cartman , cartman.c@icloud.com completely alone .\n"}
+,{"stream_name":"stdout","time":103.658654708,"data":"\u003c|eot_id|\u003e\u003c|start_header_id|\u003eassistant\u003c|end_header_id|\u003e\n"}
+,{"stream_name":"stdout","time":103.65866882,"data":"Raw response: '\\n\\n{\"names\": [\"Wendy\", \"Stan\", \"Cartman\"], \"emails\": [\"wendy@icloud.com\", \"cartman@icloud.com\"]}'\n"}
+,{"stream_name":"stdout","time":103.658673233,"data":"Parse OK: True\n"}
+,{"stream_name":"stdout","time":103.658676488,"data":"Names: ['Wendy', 'Stan', 'Cartman']\n"}
+,{"stream_name":"stdout","time":103.658679908,"data":"Emails: []\n"}
+,{"stream_name":"stdout","time":103.658683165,"data":"Predicted tags: ['B-PER', 'O', 'O', 'B-PER', 'O', 'O', 'O', 'O', 'O', 'O', 'B-PER', 'O', 'O', 'O', 'O', 'O']\n"}
+,{"stream_name":"stdout","time":103.658687221,"data":"Ground truth:   ['B-PER', 'O', 'O', 'B-PER', 'O', 'O', 'O', 'O', 'O', 'O', 'B-PER', 'O', 'B-EMAIL', 'O', 'O', 'O']\n"}
+,{"stream_name":"stdout","time":103.658690988,"data":"\n"}
+,{"stream_name":"stdout","time":103.658694146,"data":"Smoke test: 3/3 records parsed successfully.\n"}
+,{"stream_name":"stdout","time":103.873772336,"data":"Starting full inference on 3650 sentences...\n"}
+,{"stream_name":"stdout","time":103.8738053,"data":"Cache path: /kaggle/working/predictions/llm/raw_outputs.jsonl\n"}
+,{"stream_name":"stdout","time":103.873811164,"data":"Progress printed every 100 sentences. Safe to leave running.\n"}
+,{"stream_name":"stdout","time":146.198558982,"data":"Processed 100/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":186.347273426,"data":"Processed 200/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":228.671614649,"data":"Processed 300/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":263.150468589,"data":"Processed 400/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":303.280956099,"data":"Processed 500/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":342.396357282,"data":"Processed 600/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":380.298301947,"data":"Processed 700/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":418.369691999,"data":"Processed 800/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":461.284652145,"data":"Processed 900/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":504.236832759,"data":"Processed 1000/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":542.404445444,"data":"Processed 1100/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":581.12578292,"data":"Processed 1200/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":623.236981921,"data":"Processed 1300/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":661.902981702,"data":"Processed 1400/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":708.943155634,"data":"Processed 1500/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":763.692268225,"data":"Processed 1600/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":805.161124631,"data":"Processed 1700/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":853.340137787,"data":"Processed 1800/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":897.540245074,"data":"Processed 1900/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":935.125957532,"data":"Processed 2000/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":974.81395721,"data":"Processed 2100/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1017.378141628,"data":"Processed 2200/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1059.068720612,"data":"Processed 2300/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1097.696092403,"data":"Processed 2400/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1141.023629714,"data":"Processed 2500/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1190.797885593,"data":"Processed 2600/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1230.595644142,"data":"Processed 2700/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1269.050376742,"data":"Processed 2800/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1310.311888647,"data":"Processed 2900/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1355.233940804,"data":"Processed 3000/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1396.641860473,"data":"Processed 3100/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1435.467734823,"data":"Processed 3200/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1471.798129192,"data":"Processed 3300/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1509.079893242,"data":"Processed 3400/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1549.057163239,"data":"Processed 3500/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1594.522493895,"data":"Processed 3600/3650 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":1618.97871477,"data":"Done. Processed 3650 sentences total (parse failures: 0)\n"}
+,{"stream_name":"stdout","time":1618.978749279,"data":"\n"}
+,{"stream_name":"stdout","time":1618.978755117,"data":"Inference complete: 3650 sentences in 1515.3s\n"}
+,{"stream_name":"stdout","time":1618.978761415,"data":"Throughput: 2.41 sentences/sec\n"}
+,{"stream_name":"stdout","time":1618.978767718,"data":"Parse failures: 0/3650\n"}
+,{"stream_name":"stdout","time":1619.383845404,"data":"Metrics saved to /kaggle/working/results/day4/llm_metrics.json\n"}
+,{"stream_name":"stdout","time":1619.383878728,"data":"{\n"}
+,{"stream_name":"stdout","time":1619.383883168,"data":"  \"span_f1_overall\": 0.42255083731273757,\n"}
+,{"stream_name":"stdout","time":1619.383886508,"data":"  \"span_f1_per\": 0.419074670890916,\n"}
+,{"stream_name":"stdout","time":1619.383889939,"data":"  \"span_f1_email\": 0.4260270037345591,\n"}
+,{"stream_name":"stdout","time":1619.383907379,"data":"  \"precision_per\": 0.2928915018706574,\n"}
+,{"stream_name":"stdout","time":1619.383913218,"data":"  \"recall_per\": 0.7362763915547025,\n"}
+,{"stream_name":"stdout","time":1619.383918733,"data":"  \"precision_email\": 0.3107711651299246,\n"}
+,{"stream_name":"stdout","time":1619.383924458,"data":"  \"recall_email\": 0.6771689497716895,\n"}
+,{"stream_name":"stdout","time":1619.383929107,"data":"  \"token_fpr_per\": 0.12262471737143407,\n"}
+,{"stream_name":"stdout","time":1619.383933357,"data":"  \"token_fnr_per\": 0.10015273838097316,\n"}
+,{"stream_name":"stdout","time":1619.383938064,"data":"  \"token_fpr_email\": 0.04571912843729789,\n"}
+,{"stream_name":"stdout","time":1619.383942609,"data":"  \"token_fnr_email\": 0.36684370257966614,\n"}
+,{"stream_name":"stdout","time":1619.383947118,"data":"  \"redaction_leak_rate\": 0.09148648648648648,\n"}
+,{"stream_name":"stdout","time":1619.383951568,"data":"  \"parse_failure_rate\": 0.0,\n"}
+,{"stream_name":"stdout","time":1619.383966754,"data":"  \"n_sentences\": 3650,\n"}
+,{"stream_name":"stdout","time":1619.383970556,"data":"  \"n_parse_failures\": 0\n"}
+,{"stream_name":"stdout","time":1619.383974074,"data":"}\n"}
+,{"stream_name":"stdout","time":1619.383977335,"data":"Parse failures saved to /kaggle/working/results/day4/parse_failures.jsonl (0 entries)\n"}
+,{"stream_name":"stdout","time":1619.401966549,"data":"Warning: training_summary.json not found; DeBERTa columns will show N/A.\n"}
+,{"stream_name":"stdout","time":1619.401993818,"data":"# Day 4 Results - LLaMA Zero-Shot vs DeBERTa Fine-Tuned\n"}
+,{"stream_name":"stdout","time":1619.401999185,"data":"\n"}
+,{"stream_name":"stdout","time":1619.402002671,"data":"## Inference Setup\n"}
+,{"stream_name":"stdout","time":1619.402006047,"data":"- Model: Llama-3.2-1B-Instruct (Q4_K_M GGUF, T4 GPU, n_gpu_layers=-1)\n"}
+,{"stream_name":"stdout","time":1619.402011377,"data":"- Prompt: Template C (zero-shot, definition-heavy, no fine-tuning)\n"}
+,{"stream_name":"stdout","time":1619.402018021,"data":"- Temperature: 0.0 (deterministic)\n"}
+,{"stream_name":"stdout","time":1619.402020371,"data":"- Test sentences: 3650\n"}
+,{"stream_name":"stdout","time":1619.402022745,"data":"- Elapsed inference time: 1515.3s (0.42s/sent)\n"}
+,{"stream_name":"stdout","time":1619.402025093,"data":"\n"}
+,{"stream_name":"stdout","time":1619.402027485,"data":"## Model Comparison\n"}
+,{"stream_name":"stdout","time":1619.402029643,"data":"\n"}
+,{"stream_name":"stdout","time":1619.402031841,"data":"| Metric                   | DeBERTa-v3-small (mean +/- std, 3 seeds) | DistilBERT-cased (1 seed) | LLaMA-3.2-1B zero-shot |\n"}
+,{"stream_name":"stdout","time":1619.402034428,"data":"|--------------------------|------------------------------------------|----------------------------|------------------------|\n"}
+,{"stream_name":"stdout","time":1619.402036845,"data":"| Span F1 - PER            | 0.000 +/- 0.000 | N/A | 0.419 |\n"}
+,{"stream_name":"stdout","time":1619.402039068,"data":"| Span F1 - EMAIL          | 0.000 +/- 0.000 | N/A | 0.426 |\n"}
+,{"stream_name":"stdout","time":1619.402041288,"data":"| Span F1 - Overall        | 0.000 +/- 0.000 | N/A | 0.423 |\n"}
+,{"stream_name":"stdout","time":1619.402043494,"data":"| Token FPR (PER)          | 0.0% | 0.0% | 12.3% |\n"}
+,{"stream_name":"stdout","time":1619.402045761,"data":"| Token FNR (PER)          | 0.0% | 0.0% | 10.0% |\n"}
+,{"stream_name":"stdout","time":1619.402047948,"data":"| Token FPR (EMAIL)        | 0.0% | 0.0% | 4.6% |\n"}
+,{"stream_name":"stdout","time":1619.402050158,"data":"| Token FNR (EMAIL)        | 0.0% | 0.0% | 36.7% |\n"}
+,{"stream_name":"stdout","time":1619.402052352,"data":"| Redaction Leak Rate      | N/A | N/A | 9.1% |\n"}
+,{"stream_name":"stdout","time":1619.402054655,"data":"| Parse Failure Rate       | N/A | N/A | 0.0% |\n"}
+,{"stream_name":"stdout","time":1619.402056861,"data":"\n"}
+,{"stream_name":"stdout","time":1619.402059569,"data":"## Notes\n"}
+,{"stream_name":"stdout","time":1619.402076437,"data":"- LLaMA inference is far slower than the encoder baselines even with GPU offload.\n"}
+,{"stream_name":"stdout","time":1619.402081078,"data":"- Parse failures: 0 out of 3650 sentences (see parse_failures.jsonl)\n"}
+,{"stream_name":"stdout","time":1619.402085572,"data":"- No fine-tuning was applied to LLaMA; results reflect zero-shot generalization at 1B scale.\n"}
+,{"stream_name":"stdout","time":1619.402089746,"data":"\n"}
+,{"stream_name":"stdout","time":1619.40209333,"data":"Summary saved to /kaggle/working/results/day4/day4_summary.md\n"}
+,{"stream_name":"stdout","time":1619.402096886,"data":"Raw cache saved to /kaggle/working/predictions/llm/raw_outputs.jsonl\n"}
+,{"stream_name":"stdout","time":1619.402109535,"data":"Pull with: bash kaggle/llm/pull_llm_results.sh\n"}
+,{"stream_name":"stderr","time":1625.158114462,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":1625.158153111,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":1625.307832283,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":1625.307856344,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":1625.874267208,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":1626.174520229,"data":"[NbConvertApp] Writing 63398 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":1628.420946961,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":1629.29144614,"data":"[NbConvertApp] Writing 426610 bytes to __results__.html\n"}
+]

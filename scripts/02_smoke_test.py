@@ -1,4 +1,4 @@
-"""1-epoch DistilBERT smoke test to validate the full pipeline."""
+"""Day 2: 1-epoch DistilBERT smoke test to validate the encoder pipeline."""
 
 import json
 import os
@@ -16,9 +16,9 @@ from transformers import (
     TrainingArguments,
 )
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from src.pii_masking.metrics import compute_seqeval_metrics
+from pii_masking.day2_metrics import compute_seqeval_metrics
 
 MODEL_NAME = "distilbert-base-cased"
 MAX_LENGTH = 256
@@ -141,6 +141,14 @@ def main():
     results = {
         "model": MODEL_NAME,
         "epochs": NUM_EPOCHS,
+        "train_subset": len(train_ds),
+        "val_subset": len(val_ds),
+        "test_subset": len(test_ds),
+        "smoke_seq_len": SMOKE_LEN,
+        "note": (
+            "CPU smoke test with subset data and 64-token truncation. "
+            "Full dataset + 256 tokens are used for the Day 3 GPU run."
+        ),
         "train_loss": train_result.training_loss,
         "eval_metrics": {k: v for k, v in val_metrics.items() if isinstance(v, float)},
         "test_metrics": {k: v for k, v in test_metrics.items() if isinstance(v, float)},

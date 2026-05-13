@@ -1,4 +1,4 @@
-"""Inject synthetic email addresses into cleaned parquet datasets."""
+"""Day 1: inject synthetic email addresses into cleaned parquet datasets."""
 
 import json
 import sys
@@ -9,8 +9,8 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from pii_masking import data as data_mod
-from pii_masking import injection as inj_mod
+from pii_masking import day1_data as data_mod
+from pii_masking import day1_injection as inj_mod
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 PROCESSED_DIR = DATA_DIR / "processed"

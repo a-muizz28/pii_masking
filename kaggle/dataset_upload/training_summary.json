@@ -1,0 +1,132 @@
+{
+  "runs": [
+    {
+      "run_label": "deberta_seed42",
+      "model_name": "microsoft/deberta-v3-small",
+      "seed": 42,
+      "val_metrics": {
+        "eval_overall_f1": 0.9551700046576618,
+        "eval_per_f1": 0.9362302015092462,
+        "eval_email_f1": 0.9998045729919876,
+        "eval_token_fpr": 0.007349048392451747,
+        "eval_token_fnr": 0.011121243799906581,
+        "eval_loss": 0.037628173828125,
+        "eval_runtime": 15.8206,
+        "eval_samples_per_second": 270.407,
+        "eval_steps_per_second": 8.47,
+        "epoch": 5.0
+      },
+      "test_metrics": {
+        "eval_overall_f1": 0.9392287502523722,
+        "eval_per_f1": 0.9273369617110666,
+        "eval_email_f1": 0.967624259005928,
+        "eval_token_fpr": 0.008055108049552803,
+        "eval_token_fnr": 0.014674389175508614,
+        "eval_loss": 0.04901123046875,
+        "eval_runtime": 13.6689,
+        "eval_samples_per_second": 267.029,
+        "eval_steps_per_second": 8.413,
+        "epoch": 5.0
+      },
+      "train_loss": 0.14189213957330182,
+      "train_steps": 7575
+    },
+    {
+      "run_label": "deberta_seed0",
+      "model_name": "microsoft/deberta-v3-small",
+      "seed": 0,
+      "val_metrics": {
+        "eval_overall_f1": 0.9540356790051716,
+        "eval_per_f1": 0.9349210286942861,
+        "eval_email_f1": 0.9992181391712275,
+        "eval_token_fpr": 0.007887440216074586,
+        "eval_token_fnr": 0.010987788874307703,
+        "eval_loss": 0.038482666015625,
+        "eval_runtime": 15.8435,
+        "eval_samples_per_second": 270.016,
+        "eval_steps_per_second": 8.458,
+        "epoch": 5.0
+      },
+      "test_metrics": {
+        "eval_overall_f1": 0.9116603040653675,
+        "eval_per_f1": 0.9165638348362601,
+        "eval_email_f1": 0.8999090081892629,
+        "eval_token_fpr": 0.00814399200044442,
+        "eval_token_fnr": 0.020977319186216294,
+        "eval_loss": 0.07708740234375,
+        "eval_runtime": 13.6533,
+        "eval_samples_per_second": 267.335,
+        "eval_steps_per_second": 8.423,
+        "epoch": 5.0
+      },
+      "train_loss": 0.15493974913858344,
+      "train_steps": 7575
+    },
+    {
+      "run_label": "deberta_seed7",
+      "model_name": "microsoft/deberta-v3-small",
+      "seed": 7,
+      "val_metrics": {
+        "eval_overall_f1": 0.9518542236711883,
+        "eval_per_f1": 0.9320839207231114,
+        "eval_email_f1": 0.9984368894099258,
+        "eval_token_fpr": 0.007358021589512128,
+        "eval_token_fnr": 0.011610578527102471,
+        "eval_loss": 0.038421630859375,
+        "eval_runtime": 16.0928,
+        "eval_samples_per_second": 265.834,
+        "eval_steps_per_second": 8.327,
+        "epoch": 5.0
+      },
+      "test_metrics": {
+        "eval_overall_f1": 0.9359870898332437,
+        "eval_per_f1": 0.9220047732696899,
+        "eval_email_f1": 0.9692972481237208,
+        "eval_token_fpr": 0.008655074718071218,
+        "eval_token_fnr": 0.014625717901294655,
+        "eval_loss": 0.049896240234375,
+        "eval_runtime": 13.7794,
+        "eval_samples_per_second": 264.888,
+        "eval_steps_per_second": 8.346,
+        "epoch": 5.0
+      },
+      "train_loss": 0.14847947259153862,
+      "train_steps": 7575
+    },
+    {
+      "run_label": "distilbert_seed42",
+      "model_name": "distilbert-base-cased",
+      "seed": 42,
+      "val_metrics": {
+        "eval_overall_f1": 0.9835434173669468,
+        "eval_per_f1": 0.9765391014975042,
+        "eval_email_f1": 1.0,
+        "eval_token_fpr": 0.002593253950450006,
+        "eval_token_fnr": 0.004804377321559643,
+        "eval_loss": 0.015575233846902847,
+        "eval_runtime": 10.5529,
+        "eval_samples_per_second": 405.385,
+        "eval_steps_per_second": 12.698,
+        "epoch": 5.0
+      },
+      "test_metrics": {
+        "eval_overall_f1": 0.9836198179979777,
+        "eval_per_f1": 0.9777140124342419,
+        "eval_email_f1": 0.997716894977169,
+        "eval_token_fpr": 0.002510971612688184,
+        "eval_token_fnr": 0.004867127421395892,
+        "eval_loss": 0.015107202343642712,
+        "eval_runtime": 9.1738,
+        "eval_samples_per_second": 397.872,
+        "eval_steps_per_second": 12.536,
+        "epoch": 5.0
+      },
+      "train_loss": 0.041690820766360846,
+      "train_steps": 7575
+    }
+  ],
+  "deberta_test_f1_mean": 0.9289587147169945,
+  "deberta_test_f1_std": 0.015068289513825972,
+  "deberta_test_fpr_mean": 0.00828472492268948,
+  "deberta_test_fnr_mean": 0.016759142087673186
+}

@@ -1,4 +1,4 @@
-"""Tokenize parquet splits and save HuggingFace DatasetDict to disk."""
+"""Day 2: tokenize parquet splits and save HuggingFace DatasetDict to disk."""
 
 import json
 import sys
@@ -7,9 +7,9 @@ from pathlib import Path
 import torch  # noqa: F401 — used for tensor ops in stats
 from transformers import AutoTokenizer
 
-sys.path.insert(0, str(Path(__file__).parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from src.pii_masking.preprocessing import build_dataset_dict, validate_alignment
+from pii_masking.day2_preprocessing import build_dataset_dict, validate_alignment
 
 CONFIG_PATH = Path("configs/label_config.json")
 TRAIN_PATH = Path("data/processed/train_with_emails.parquet")

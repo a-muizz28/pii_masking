@@ -1,0 +1,17 @@
+{
+  "span_f1_overall": 0.42255083731273757,
+  "span_f1_per": 0.419074670890916,
+  "span_f1_email": 0.4260270037345591,
+  "precision_per": 0.2928915018706574,
+  "recall_per": 0.7362763915547025,
+  "precision_email": 0.3107711651299246,
+  "recall_email": 0.6771689497716895,
+  "token_fpr_per": 0.12262471737143407,
+  "token_fnr_per": 0.10015273838097316,
+  "token_fpr_email": 0.04571912843729789,
+  "token_fnr_email": 0.36684370257966614,
+  "redaction_leak_rate": 0.09148648648648648,
+  "parse_failure_rate": 0.0,
+  "n_sentences": 3650,
+  "n_parse_failures": 0
+}

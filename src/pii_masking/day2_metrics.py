@@ -1,4 +1,4 @@
-"""Evaluation metrics, including bootstrap helpers."""
+"""Day 2 encoder smoke-test evaluation metrics."""
 
 from __future__ import annotations
 

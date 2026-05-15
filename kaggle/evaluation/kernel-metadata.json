@@ -1,0 +1,20 @@
+{
+  "id": "abdulmuizz28/pii-masking-day-5-evaluation",
+  "title": "PII Masking Day 5 Evaluation",
+  "code_file": "05_evaluation.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "nvidiaTeslaT4x2",
+  "enable_internet": true,
+  "dataset_sources": [
+    "abdulmuizz28/pii-masking-processed-dataset",
+    "abdulmuizz28/pii-masking-day5-eval"
+  ],
+  "kernel_sources": [
+    "abdulmuizz28/pii-masking-day-3-training",
+    "abdulmuizz28/pii-masking-day-4-llm-inference"
+  ],
+  "competition_sources": []
+}

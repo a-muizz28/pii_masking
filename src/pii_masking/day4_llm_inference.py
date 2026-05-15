@@ -99,6 +99,14 @@ class LLMPIIPipeline:
     def _align_to_iob2(
         self, tokens: list[str], names: list[str], emails: list[str]
     ) -> list[str]:
+        # Drop any name that is a substring of an email span — EMAIL wins.
+        # Guards against the LLM redundantly listing "john.smith" in names
+        # when "john.smith@acme.com" is already in emails. Without this,
+        # a failed email token-match would leave the name tokens untagged
+        # and they would then be picked up as B-PER / I-PER.
+        emails_lower = [e.strip().lower() for e in emails]
+        names = [n for n in names if not any(n.strip().lower() in e for e in emails_lower)]
+
         tags = ["O"] * len(tokens)
         tokens_lower = [t.lower() for t in tokens]
 

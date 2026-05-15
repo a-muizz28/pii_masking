@@ -1,0 +1,11 @@
+{
+  "per_f1": 0.7176763110307415,
+  "email_f1": null,
+  "overall_f1": 0.35883815551537074,
+  "fpr": 0.01637054419488211,
+  "fnr": 0.2739282153539382,
+  "redaction_leak_rate": 0.2800702370500439,
+  "leaked_span_count": 1276,
+  "total_pii_span_count": 4556,
+  "model_dir": "/kaggle/input/notebooks/abdulmuizz28/pii-masking-day-3-training/deberta_seed7/best_model"
+}

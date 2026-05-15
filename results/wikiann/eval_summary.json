@@ -1,0 +1,21 @@
+{
+  "dataset": "wikiann/en",
+  "n_sentences": 3652,
+  "deberta": {
+    "per_f1": 0.7176763110307415,
+    "email_f1": null,
+    "overall_f1": 0.35883815551537074,
+    "fpr": 0.01637054419488211,
+    "fnr": 0.2739282153539382,
+    "redaction_leak_rate": 0.2800702370500439
+  },
+  "llama": {
+    "per_f1": 0.6277842383039627,
+    "email_f1": null,
+    "overall_f1": 0.31389211915198134,
+    "fpr": 0.14420605654263047,
+    "fnr": 0.12554004652708542,
+    "redaction_leak_rate": 0.13718173836698858,
+    "parse_failure_rate": 0.0
+  }
+}

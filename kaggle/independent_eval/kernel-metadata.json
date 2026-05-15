@@ -1,0 +1,17 @@
+{
+  "id": "abdulmuizz28/pii-masking-day-7-independent-evaluation",
+  "title": "PII Masking Day 7 Independent Evaluation",
+  "code_file": "07_independent_eval.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "accelerator": "nvidiaTeslaT4x2",
+  "enable_internet": true,
+  "dataset_sources": [],
+  "kernel_sources": [
+    "abdulmuizz28/pii-masking-day-3-training",
+    "abdulmuizz28/pii-masking-day-4-llm-inference"
+  ],
+  "competition_sources": []
+}

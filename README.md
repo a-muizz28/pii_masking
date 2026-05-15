@@ -24,8 +24,8 @@ The numeric prefixes show the order in which the project stages were created and
 | Day 2 | `notebooks/02_eda.ipynb`, `scripts/02_smoke_test.py` | `src/pii_masking/day2_metrics.py` | `models/smoke_test_distilbert/smoke_test_results.json` |
 | Day 3 | `notebooks/03_encoder_training.ipynb` | Kaggle notebook code + Day 2 dataset | encoder checkpoints, `results/day3_encoder_training/training_summary.json` |
 | Day 4 | `scripts/04_llm_inference.py`, `notebooks/04_llm_inference.ipynb` | `src/pii_masking/day4_llm_inference.py`, `src/pii_masking/day4_evaluate.py` | LLaMA predictions/cache, `results/day4_llm_inference/llm_metrics.json`, Day 4 summary |
-| Day 5 | `src/pii_masking/day5_masking.py` | placeholder | planned masking/leak-check routines |
-| Day 6 | `notebooks/06_error_analysis.ipynb`, `scripts/06_error_analysis.py`, `src/pii_masking/day6_error_analysis.py` | placeholder | planned error analysis |
+| Day 5 | `scripts/05_evaluate_all.py`, `src/pii_masking/day5_masking.py` | `src/pii_masking/day5_masking.py` | final comparison metrics, masking leak rate, bootstrap results |
+| Day 6 | `notebooks/06_error_analysis.ipynb`, `scripts/06_error_analysis.py`, `src/pii_masking/day6_error_analysis.py` | `src/pii_masking/day6_error_analysis.py` | error bucket counts, annotation TSVs, error-distribution figure |
 
 `scripts/` are command-line entrypoints. `src/pii_masking/` contains reusable implementation logic. `notebooks/` documents EDA artifacts and holds Kaggle/GPU experiments. `tests/` validates the reusable source modules.
 
@@ -39,7 +39,7 @@ python scripts/02_smoke_test.py
 python scripts/04_llm_inference.py
 ```
 
-Encoder training is implemented in `notebooks/03_encoder_training.ipynb` for Kaggle/GPU execution. Add the public Kaggle notebook URL there after publishing. `scripts/05_evaluate.py` and `scripts/06_error_analysis.py` are currently placeholders.
+Encoder training is implemented in `notebooks/03_encoder_training.ipynb` for Kaggle/GPU execution. Add the public Kaggle notebook URL there after publishing. Day 5 and Day 6 outputs are produced by `scripts/05_evaluate_all.py` and `scripts/06_error_analysis.py`.
 
 ## Step-By-Step Flow
 
@@ -68,14 +68,14 @@ Results will be written to:
 | Decision | Value |
 |---|---|
 | Email tokenization | 90% single-token, 10% multi-token |
-| Label alignment | Strategy B (B→I propagation on all subwords) |
+| Label alignment | Strategy B (B->I propagation on all subwords) |
 | Encoder (primary) | DeBERTa-v3-small (3 seeds: 42, 0, 7) |
 | Encoder (baseline) | DistilBERT-base-cased (1 seed: 42) |
 | LLM model | Llama-3.2-1B-Instruct (Q4_K_M GGUF via llama-cpp-python) |
 | LLM prompt strategy | Template C only |
 | Eval library | seqeval (primary) |
 | Masking placeholders | [NAME], [EMAIL] |
-| Injection rate | 0.6× PER-sentence count |
+| Injection rate | 0.6x PER-sentence count |
 | Random seed | 42 (primary), 0 and 7 (multi-seed) |
 | Train/val split | 85/15 stratified by entity-density |
 | Statistical test | Paired bootstrap (1000 iterations, 95% CI) |

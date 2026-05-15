@@ -94,12 +94,12 @@ def main() -> None:
     with config_path.open(encoding="utf-8") as f:
         config = json.load(f)
 
-    # 2. Load parquets — track original split indices
-    print("Loading train_clean.parquet …")
+    # 2. Load parquets - track original split indices
+    print("Loading train_clean.parquet ...")
     train_examples = parquet_to_examples(PROCESSED_DIR / "train_clean.parquet")
-    print("Loading val_clean.parquet …")
+    print("Loading val_clean.parquet ...")
     val_examples = parquet_to_examples(PROCESSED_DIR / "val_clean.parquet")
-    print("Loading test_clean.parquet …")
+    print("Loading test_clean.parquet ...")
     test_examples = parquet_to_examples(PROCESSED_DIR / "test_clean.parquet")
 
     n_train_orig = len(train_examples)
@@ -107,13 +107,13 @@ def main() -> None:
 
     # 3. Inject into train+val combined (same config/domains)
     combined = train_examples + val_examples
-    print(f"\nInjecting emails into train+val combined ({len(combined)} examples) …")
+    print(f"\nInjecting emails into train+val combined ({len(combined)} examples) ...")
     injected_combined, train_report = inj_mod.inject_dataset(
         combined, config, split="train", seed=42
     )
 
     # 4. Inject into test
-    print(f"Injecting emails into test ({len(test_examples)} examples) …")
+    print(f"Injecting emails into test ({len(test_examples)} examples) ...")
     injected_test, test_report = inj_mod.inject_dataset(
         test_examples, config, split="test", seed=123
     )

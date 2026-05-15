@@ -1,7 +1,7 @@
 """Day 5: Full evaluation + masking pipeline + paired bootstrap.
 
 Adapted to actual project layout:
-  - DeBERTa seeds: 0, 7, 42  (not 42/43/44 as in spec template)
+  - DeBERTa seeds: 0, 7, 42
   - Encoder predictions generated from data/processed/test_injected.parquet
   - LLM predictions:  predictions/llm/raw_outputs.jsonl
     keys: tokens, sequence, ner_tags (gold), predicted_tags (pred)
@@ -167,7 +167,7 @@ def generate_encoder_predictions() -> None:
         import torch
         from transformers import AutoModelForTokenClassification, AutoTokenizer
     except ImportError:
-        logger.error("transformers / torch not installed — cannot generate encoder predictions")
+        logger.error("transformers / torch not installed - cannot generate encoder predictions")
         return
 
     ENCODER_DIR.mkdir(parents=True, exist_ok=True)
@@ -186,7 +186,7 @@ def generate_encoder_predictions() -> None:
     for model_key, model_path in ENCODER_MODELS.items():
         out_file = ENCODER_DIR / f"{model_key}_predictions.jsonl"
         if out_file.exists():
-            logger.info("Skipping %s — prediction file already exists", model_key)
+            logger.info("Skipping %s - prediction file already exists", model_key)
             continue
 
         if not model_path.exists():
@@ -210,21 +210,20 @@ def generate_encoder_predictions() -> None:
                 for rec in preds:
                     fh.write(json.dumps(rec) + "\n")
 
-            logger.info("  Saved %d records → %s", len(preds), out_file)
+            logger.info("  Saved %d records -> %s", len(preds), out_file)
             del model  # free memory before next model
         except Exception as exc:  # noqa: BLE001
             logger.error("Failed to generate predictions for %s: %s", model_key, exc)
 
 
-# ── Step 1: load all predictions ─────────────────────────────────────────────
-
+# Step 1: load all predictions
 def load_all_predictions() -> tuple[dict[str, list[dict]], list[str]]:
     model_predictions: dict[str, list[dict]] = {}
     warnings: list[str] = []
 
     # Encoder predictions
     if not ENCODER_DIR.exists():
-        warnings.append("predictions/encoder/ not found — encoder models were skipped")
+        warnings.append("predictions/encoder/ not found - encoder models were skipped")
     else:
         for pfile in sorted(ENCODER_DIR.glob("*.json*")):
             key = pfile.stem.replace("_predictions", "")
@@ -279,8 +278,7 @@ def load_all_predictions() -> tuple[dict[str, list[dict]], list[str]]:
     return model_predictions, warnings
 
 
-# ── Step 2: seqeval span F1 ───────────────────────────────────────────────────
-
+# Step 2: seqeval span F1
 def run_seqeval(model_predictions: dict) -> dict:
     results: dict[str, dict] = {}
     for model_key, records in model_predictions.items():
@@ -335,8 +333,7 @@ def run_seqeval(model_predictions: dict) -> dict:
     return results
 
 
-# ── Step 3: token-level FPR / FNR ────────────────────────────────────────────
-
+# Step 3: token-level FPR / FNR
 def compute_token_rates(model_predictions: dict) -> dict:
     results: dict[str, dict] = {}
     for model_key, records in model_predictions.items():
@@ -388,15 +385,13 @@ def compute_token_rates(model_predictions: dict) -> dict:
     return results
 
 
-# ── Step 4: masking pipeline + leak rate ─────────────────────────────────────
-
+# Step 4: masking pipeline + leak rate
 def compute_leak_rates(model_predictions: dict) -> dict:
     masker = MaskingPipeline()
     return {key: masker.compute_leak_rate(records) for key, records in model_predictions.items()}
 
 
-# ── Step 5: paired bootstrap ─────────────────────────────────────────────────
-
+# Step 5: paired bootstrap
 def _sentence_f1(gold_tags: list[str], pred_tags: list[str]) -> float:
     """Span F1 for a single sentence; returns 0.0 when no entities on either side."""
     if not any(t != "O" for t in gold_tags) and not any(t != "O" for t in pred_tags):
@@ -460,7 +455,7 @@ def run_bootstrap(model_predictions: dict) -> dict | None:
     interpretation = (
         "DeBERTa significantly outperforms LLaMA (p < 0.05)"
         if p_value < 0.05
-        else f"No significant difference at α=0.05 (p = {p_value:.3f})"
+        else f"No significant difference at alpha=0.05 (p = {p_value:.3f})"
     )
 
     return {
@@ -475,8 +470,7 @@ def run_bootstrap(model_predictions: dict) -> dict | None:
     }
 
 
-# ── Step 6: build reports/results.json ───────────────────────────────────────
-
+# Step 6: build reports/results.json
 def build_results_json(
     model_predictions: dict,
     seqeval_res: dict,
@@ -571,8 +565,7 @@ def build_results_json(
     }
 
 
-# ── Step 7: build results/day5/day5_summary.md ───────────────────────────────
-
+# Step 7: build results/day5/day5_summary.md
 def build_summary_md(
     results: dict,
     bootstrap: dict | None,
@@ -588,7 +581,7 @@ def build_summary_md(
     def _ms(mean, std, d: int = 3) -> str:
         if mean is None:
             return "N/A"
-        return f"{mean:.{d}f}±{std:.{d}f}" if std is not None else f"{mean:.{d}f}"
+        return f"{mean:.{d}f}+/-{std:.{d}f}" if std is not None else f"{mean:.{d}f}"
 
     sf = deb["span_f1"]
     lines = [
@@ -599,10 +592,10 @@ def build_summary_md(
         "",
         "## Main Comparison Table",
         "",
-        "| Metric | DeBERTa-v3-small (mean±std) | DistilBERT-cased (1 seed) | LLaMA-3.2-1B-Instruct (Template C) |",
+        "| Metric | DeBERTa-v3-small (mean+/-std) | DistilBERT-cased (1 seed) | LLaMA-3.2-1B-Instruct (Template C) |",
         "|-------------------------|------------------------------|---------------------------|--------------------------------------|",
-        f"| Span F1 — PER           | {_ms(sf['PER']['mean'], sf['PER']['std'])} | {_f(dist['span_f1']['PER'])} | {_f(llm['span_f1']['PER'])} |",
-        f"| Span F1 — EMAIL         | {_ms(sf['EMAIL']['mean'], sf['EMAIL']['std'])} | {_f(dist['span_f1']['EMAIL'])} | {_f(llm['span_f1']['EMAIL'])} |",
+        f"| Span F1 - PER           | {_ms(sf['PER']['mean'], sf['PER']['std'])} | {_f(dist['span_f1']['PER'])} | {_f(llm['span_f1']['PER'])} |",
+        f"| Span F1 - EMAIL         | {_ms(sf['EMAIL']['mean'], sf['EMAIL']['std'])} | {_f(dist['span_f1']['EMAIL'])} | {_f(llm['span_f1']['EMAIL'])} |",
         f"| Macro Span F1           | {_ms(sf['macro_avg']['mean'], sf['macro_avg']['std'])} | {_f(dist['span_f1']['macro_avg'])} | {_f(llm['span_f1']['macro_avg'])} |",
         f"| Token FPR (binary)      | {_f(deb['token_fpr'])} | {_f(dist['token_fpr'])} | {_f(llm['token_fpr'])} |",
         f"| Token FNR (binary)      | {_f(deb['token_fnr'])} | {_f(dist['token_fnr'])} | {_f(llm['token_fnr'])} |",
@@ -620,7 +613,7 @@ def build_summary_md(
             f"- Observed F1 difference: {bootstrap['observed_diff_f1']:.3f}",
             f"- 95% CI: [{bootstrap['ci_lower_95']:.3f}, {bootstrap['ci_upper_95']:.3f}]",
             f"- p-value (one-sided): {bootstrap['p_value_one_sided']:.3f}",
-            f"- Conclusion: {sig} at α=0.05",
+            f"- Conclusion: {sig} at alpha=0.05",
             "",
         ]
 
@@ -632,12 +625,11 @@ def build_summary_md(
     return "\n".join(lines)
 
 
-# ── stdout tables ─────────────────────────────────────────────────────────────
-
+# stdout tables
 def _print_seqeval_table(seqeval_res: dict) -> None:
-    print("\n── Span F1 (seqeval strict IOB2) ──")
+    print("\n-- Span F1 (seqeval strict IOB2) --")
     print(f"{'Model':<22} {'PER F1':>8} {'EMAIL F1':>10} {'Macro F1':>10}")
-    print("─" * 54)
+    print("-" * 54)
     for key in sorted(seqeval_res):
         m = seqeval_res[key]
         per_f1   = (m.get("PER")       or {}).get("f1", 0.0) or 0.0
@@ -648,10 +640,10 @@ def _print_seqeval_table(seqeval_res: dict) -> None:
 
 
 def _print_token_table(token_res: dict) -> None:
-    print("── Token FPR / FNR ──")
+    print("-- Token FPR / FNR --")
     header = f"{'Model':<22} {'FPR':>7} {'FNR':>7} {'PER_FPR':>9} {'PER_FNR':>9} {'EM_FPR':>8} {'EM_FNR':>8}"
     print(header)
-    print("─" * len(header))
+    print("-" * len(header))
     for key in sorted(token_res):
         m = token_res[key]
         print(
@@ -666,10 +658,9 @@ def _print_token_table(token_res: dict) -> None:
     print()
 
 
-# ── main ──────────────────────────────────────────────────────────────────────
-
+# main
 def main() -> None:
-    # Step 0 — generate encoder predictions if absent
+    # Step 0 - generate encoder predictions if absent
     print("[DAY 5] Checking encoder predictions...")
     missing_encoder_files = [
         ENCODER_DIR / f"{model_key}_predictions.jsonl"
@@ -685,7 +676,7 @@ def main() -> None:
         )
         generate_encoder_predictions()
     else:
-        print("[DAY 5] Encoder predictions found — skipping generation.")
+        print("[DAY 5] Encoder predictions found - skipping generation.")
 
     # Step 1
     print("[DAY 5] Loading predictions...")
@@ -725,7 +716,7 @@ def main() -> None:
         print(f"  {bootstrap['interpretation']}")
         BOOTSTRAP_OUT.parent.mkdir(parents=True, exist_ok=True)
         BOOTSTRAP_OUT.write_text(json.dumps(bootstrap, indent=2), encoding="utf-8")
-        print(f"  Saved → {BOOTSTRAP_OUT}")
+        print(f"  Saved -> {BOOTSTRAP_OUT}")
     print()
 
     # Step 6
@@ -733,14 +724,14 @@ def main() -> None:
     full_results = build_results_json(model_preds, seqeval_res, token_res, leak_res, bootstrap)
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_JSON.write_text(json.dumps(full_results, indent=2), encoding="utf-8")
-    print(f"  Saved → {RESULTS_JSON}")
+    print(f"  Saved -> {RESULTS_JSON}")
 
     # Step 7
     print("[DAY 5] Saving results/day5/day5_summary.md...")
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     summary = build_summary_md(full_results, bootstrap, warnings)
     SUMMARY_MD.write_text(summary, encoding="utf-8")
-    print(f"  Saved → {SUMMARY_MD}")
+    print(f"  Saved -> {SUMMARY_MD}")
 
     print()
     print("[DAY 5] DONE. All outputs written.")

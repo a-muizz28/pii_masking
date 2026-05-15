@@ -4,7 +4,7 @@ import json
 import sys
 from pathlib import Path
 
-import torch  # noqa: F401 — used for tensor ops in stats
+import torch  # noqa: F401 - used for tensor ops in stats
 from transformers import AutoTokenizer
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))

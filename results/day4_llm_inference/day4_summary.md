@@ -2,7 +2,7 @@
 
 ## Inference Setup
 - Model: Llama-3.2-1B-Instruct (Q4_K_M GGUF, T4 GPU, n_gpu_layers=-1)
-- Prompt: Template C (zero-shot, definition-heavy, no fine-tuning)
+- Prompt: Template C (zero-shot extraction instructions, no fine-tuning)
 - Temperature: 0.0 (deterministic)
 - Test sentences: 3650
 - Elapsed inference time: 1515.3s (0.42s/sent)

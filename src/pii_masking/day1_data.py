@@ -49,7 +49,7 @@ def validate_example(example: dict, idx: int) -> dict:
         result["violations"].append("Empty token list or contains empty string tokens")
         return result
 
-    # Check 4: BIO well-formedness — fix orphan I-X
+    # Check 4: BIO well-formedness - fix orphan I-X
     fixed_tags = list(ner_tags)
     for j, tag in enumerate(fixed_tags):
         if not tag.startswith("I-"):
@@ -98,7 +98,7 @@ def load_and_validate(json_path: str | Path) -> tuple[list[dict], dict]:
     with json_path.open(encoding="utf-8") as f:
         raw = json.load(f)
 
-    logger.info("Processing %d examples from %s…", len(raw), json_path.name)
+    logger.info("Processing %d examples from %s...", len(raw), json_path.name)
 
     cleaned: list[dict] = []
     invalid_indices: list[int] = []

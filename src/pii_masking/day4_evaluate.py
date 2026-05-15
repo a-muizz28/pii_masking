@@ -86,7 +86,7 @@ def compute_llm_metrics(records: list[dict]) -> dict:
 
     # seqeval overall F1
     span_f1_overall_val = report.get("macro avg", {}).get("f1-score", 0.0)
-    # Also check "weighted avg" as fallback — use macro avg as primary
+    # Also check "weighted avg" as fallback - use macro avg as primary
     span_f1_per = float(per_stats.get("f1-score", 0.0))
     span_f1_email = float(email_stats.get("f1-score", 0.0))
 

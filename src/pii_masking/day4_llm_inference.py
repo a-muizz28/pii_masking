@@ -14,7 +14,7 @@ SYSTEM_PROMPT = (
     "Rules:\n"
     "- Extract full names as they appear (e.g., \"John Smith\", not \"John\" and \"Smith\" separately)\n"
     "- Do NOT extract honorifics like Dr., Mr., Mrs., Prof. as part of the name unless inseparable\n"
-    "- Do NOT extract organizations, locations, or other entities — only person names and emails\n"
+    "- Do NOT extract organizations, locations, or other entities - only person names and emails\n"
     "- If no names or emails are found, return empty lists"
 )
 
@@ -99,11 +99,6 @@ class LLMPIIPipeline:
     def _align_to_iob2(
         self, tokens: list[str], names: list[str], emails: list[str]
     ) -> list[str]:
-        # Drop any name that is a substring of an email span — EMAIL wins.
-        # Guards against the LLM redundantly listing "john.smith" in names
-        # when "john.smith@acme.com" is already in emails. Without this,
-        # a failed email token-match would leave the name tokens untagged
-        # and they would then be picked up as B-PER / I-PER.
         emails_lower = [e.strip().lower() for e in emails]
         names = [n for n in names if not any(n.strip().lower() in e for e in emails_lower)]
 

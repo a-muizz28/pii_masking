@@ -6,9 +6,7 @@ import os
 import sys
 import time
 
-# ---------------------------------------------------------------------------
 # Resolve project root so imports work when run from any cwd
-# ---------------------------------------------------------------------------
 _script_dir = os.path.dirname(os.path.abspath(__file__))
 _project_root = os.path.dirname(_script_dir)
 if _project_root not in sys.path:
@@ -36,7 +34,7 @@ def parse_args() -> argparse.Namespace:
     return p.parse_args()
 
 
-
+# Model setup
 def ensure_model(model_path: str, skip_download: bool) -> None:
     if os.path.exists(model_path):
         print(f"Model found: {model_path}")
@@ -45,7 +43,7 @@ def ensure_model(model_path: str, skip_download: bool) -> None:
         raise FileNotFoundError(
             f"Model not found at {model_path} and --skip-download was set."
         )
-    print("Model not found. Downloading from HuggingFace …")
+    print("Model not found. Downloading from HuggingFace ...")
     from huggingface_hub import hf_hub_download
     hf_hub_download(
         repo_id="bartowski/Llama-3.2-1B-Instruct-GGUF",
@@ -55,11 +53,11 @@ def ensure_model(model_path: str, skip_download: bool) -> None:
     print("Download complete.")
 
 
-
+# Test data loading
 def load_test_records(data_path: str, hf_dataset_path: str) -> list[dict]:
     records = []
 
-    # Try parquet first
+    # Prefer the processed parquet because it preserves the original sequence column.
     if os.path.exists(data_path):
         try:
             import pandas as pd
@@ -74,7 +72,7 @@ def load_test_records(data_path: str, hf_dataset_path: str) -> list[dict]:
         except Exception as e:
             print(f"Parquet load failed ({e}), falling back to HF DatasetDict.")
 
-    # Fallback: HF DatasetDict
+    # Fall back to the tokenized Hugging Face dataset when parquet is unavailable.
     from datasets import load_from_disk
     ds = load_from_disk(hf_dataset_path)
     split = ds["test"]
@@ -87,10 +85,10 @@ def load_test_records(data_path: str, hf_dataset_path: str) -> list[dict]:
     return records
 
 
-
+# Smoke-test the prompt, parser, and BIO alignment before the full run.
 def run_smoke_test(pipeline: LLMPIIPipeline, records: list[dict]) -> None:
     print("\n" + "=" * 60)
-    print("SMOKE TEST — first 3 records")
+    print("SMOKE TEST - first 3 records")
     print("=" * 60)
     n_ok = 0
     for i in range(min(3, len(records))):
@@ -119,9 +117,7 @@ def run_smoke_test(pipeline: LLMPIIPipeline, records: list[dict]) -> None:
     print("=" * 60 + "\n")
 
 
-# ---------------------------------------------------------------------------
-# Helpers for the comparison table
-# ---------------------------------------------------------------------------
+# Summary table helpers
 def _fmt_f1(val: float) -> str:
     return f"{val:.3f}"
 
@@ -179,12 +175,12 @@ def _extract_deberta_stats(summary: dict) -> dict:
     }
 
 
-
+# Markdown summary rendering
 def build_summary_md(llm_metrics: dict, deb: dict, n_sentences: int, elapsed: float) -> str:
     dis = deb.get("distilbert", {})
 
     def deb_cell(mean, std):
-        return f"{mean:.3f} ± {std:.3f}"
+        return f"{mean:.3f} +/- {std:.3f}"
 
     def dis_cell(val):
         return f"{val:.3f}" if val else "N/A"
@@ -197,28 +193,28 @@ def build_summary_md(llm_metrics: dict, deb: dict, n_sentences: int, elapsed: fl
     n_fail = llm_metrics["n_parse_failures"]
 
     lines = [
-        "# Day 4 Results — LLaMA Zero-Shot vs DeBERTa Fine-Tuned",
+        "# Day 4 Results - LLaMA Zero-Shot vs DeBERTa Fine-Tuned",
         "",
         "## Inference Setup",
         "- Model: Llama-3.2-1B-Instruct (Q4_K_M GGUF, CPU-only, i7-11gen)",
-        "- Prompt: Template C (zero-shot, definition-heavy, no fine-tuning)",
+        "- Prompt: Template C (zero-shot extraction instructions, no fine-tuning)",
         "- Temperature: 0.0 (deterministic)",
         f"- Test sentences: {n_sentences}",
         f"- Elapsed inference time: {elapsed:.1f}s ({elapsed / max(n_sentences, 1):.2f}s/sent)",
         "",
         "## Model Comparison",
         "",
-        "| Metric                   | DeBERTa-v3-small (mean ± std, 3 seeds) | DistilBERT-cased (1 seed) | LLaMA-3.2-1B zero-shot |",
+        "| Metric                   | DeBERTa-v3-small (mean +/- std, 3 seeds) | DistilBERT-cased (1 seed) | LLaMA-3.2-1B zero-shot |",
         "|--------------------------|----------------------------------------|--------------------------|------------------------|",
-        "| Span F1 — PER            | "
+        "| Span F1 - PER            | "
         + deb_cell(deb["deberta_mean_per"], deb["deberta_std_per"]).ljust(38)
         + " | " + dis_cell(dis.get("span_f1_per", 0)).ljust(24)
         + " | " + _fmt_f1(llm_metrics["span_f1_per"]).ljust(22) + " |",
-        "| Span F1 — EMAIL          | "
+        "| Span F1 - EMAIL          | "
         + deb_cell(deb["deberta_mean_email"], deb["deberta_std_email"]).ljust(38)
         + " | " + dis_cell(dis.get("span_f1_email", 0)).ljust(24)
         + " | " + _fmt_f1(llm_metrics["span_f1_email"]).ljust(22) + " |",
-        "| Span F1 — Overall        | "
+        "| Span F1 - Overall        | "
         + deb_cell(deb["deberta_mean_overall"], deb["deberta_std_overall"]).ljust(38)
         + " | " + dis_cell(dis.get("span_f1_overall", 0)).ljust(24)
         + " | " + _fmt_f1(llm_metrics["span_f1_overall"]).ljust(22) + " |",
@@ -248,25 +244,22 @@ def build_summary_md(llm_metrics: dict, deb: dict, n_sentences: int, elapsed: fl
         + " | " + parse_fail.ljust(22) + " |",
         "",
         "## Notes",
-        "- LLaMA inference is ~100× slower than encoder (CPU, ~0.5 sent/sec vs ~50 sent/sec)",
+        "- LLaMA inference is ~100x slower than encoder (CPU, ~0.5 sent/sec vs ~50 sent/sec)",
         f"- Parse failures: {n_fail} out of {n_sentences} sentences (see parse_failures.jsonl)",
         "- No fine-tuning was applied to LLaMA; results reflect zero-shot generalization at 1B scale",
     ]
     return "\n".join(lines) + "\n"
 
 
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
 def main() -> None:
     args = parse_args()
 
-    # STEP 0 — environment check
+    # Validate model availability and output directories first.
     ensure_model(args.model_path, args.skip_download)
     os.makedirs(args.results_dir, exist_ok=True)
     os.makedirs(os.path.dirname(os.path.abspath(args.cache_path)), exist_ok=True)
 
-    # STEP 1 — load data
+    # Load held-out test records.
     all_records = load_test_records(args.data_path, args.hf_dataset_path)
     if args.limit:
         records = all_records[: args.limit]
@@ -274,20 +267,20 @@ def main() -> None:
         records = all_records
     print(f"Loaded {len(records)} test records.")
 
-    # Initialise pipeline
-    print("Loading LLaMA model …")
+    # Initialise pipeline.
+    print("Loading LLaMA model ...")
     pipeline = LLMPIIPipeline(
         model_path=args.model_path,
         n_threads=args.n_threads,
     )
     print("Model loaded.")
 
-    # STEP 2 — smoke test
+    # Run a small parser sanity check unless explicitly skipped.
     if not args.skip_smoke_test:
         run_smoke_test(pipeline, all_records[:3])
 
-    # STEP 3 — full inference
-    print(f"\nRunning inference on {len(records)} records …")
+    # Run full inference and checkpoint raw model outputs.
+    print(f"\nRunning inference on {len(records)} records ...")
     t0 = time.time()
     results = pipeline.predict_batch(
         records,
@@ -297,21 +290,21 @@ def main() -> None:
     elapsed = time.time() - t0
     print(f"Inference complete in {elapsed:.1f}s ({elapsed / max(len(records), 1):.2f}s/sent)")
 
-    # STEP 4 — compute metrics
+    # Compute span, token, and leak metrics for the LLM outputs.
     metrics = compute_llm_metrics(results)
     metrics_path = os.path.join(args.results_dir, "llm_metrics.json")
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
-    print(f"Metrics saved → {metrics_path}")
+    print(f"Metrics saved -> {metrics_path}")
 
-    # STEP 5 — save parse failures
+    # Persist parse failures separately for auditability.
     failures_path = os.path.join(args.results_dir, "parse_failures.jsonl")
     with open(failures_path, "w", encoding="utf-8") as f:
         for entry in _parse_failure_log:
             f.write(json.dumps(entry) + "\n")
-    print(f"Parse failures saved → {failures_path} ({len(_parse_failure_log)} entries)")
+    print(f"Parse failures saved -> {failures_path} ({len(_parse_failure_log)} entries)")
 
-    # STEP 6 — load DeBERTa results
+    # Load encoder summary metrics for the comparison table.
     day3_summary_path = os.path.join("results", "day3_encoder_training", "training_summary.json")
     deb_stats: dict = {}
     if os.path.exists(day3_summary_path):
@@ -329,24 +322,24 @@ def main() -> None:
             "distilbert": {},
         }
 
-    # STEP 7 — write summary markdown
+    # Write the markdown summary consumed by the report.
     summary_md = build_summary_md(metrics, deb_stats, len(records), elapsed)
     summary_path = os.path.join(args.results_dir, "day4_summary.md")
     with open(summary_path, "w", encoding="utf-8") as f:
         f.write(summary_md)
     print(f"\n{summary_md}")
-    print(f"Summary saved → {summary_path}")
+    print(f"Summary saved -> {summary_path}")
 
-    # STEP 8 — final print
+    # Emit a compact CLI summary.
     print("\n=== Day 4 Complete ===")
     print(f"LLaMA span F1 overall: {metrics['span_f1_overall']:.3f}")
     print(f"LLaMA span F1 PER:     {metrics['span_f1_per']:.3f}")
     print(f"LLaMA span F1 EMAIL:   {metrics['span_f1_email']:.3f}")
     print(f"Redaction leak rate:   {metrics['redaction_leak_rate'] * 100:.1f}%")
     print(f"Parse failure rate:    {metrics['parse_failure_rate'] * 100:.1f}%")
-    print(f"Results  → {metrics_path}")
-    print(f"Summary  → {summary_path}")
-    print(f"Raw cache → {args.cache_path}")
+    print(f"Results  -> {metrics_path}")
+    print(f"Summary  -> {summary_path}")
+    print(f"Raw cache -> {args.cache_path}")
 
 
 if __name__ == "__main__":

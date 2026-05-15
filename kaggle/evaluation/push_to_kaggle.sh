@@ -15,7 +15,7 @@ DATASET_DIR="$SCRIPT_DIR/dataset_staging"
 echo "=== Day 5 Kaggle push ==="
 echo "Project root : $PROJECT_ROOT"
 
-# ── Stage code-only dataset (scripts + src, no model weights) ─────────────────
+# Stage code-only dataset (scripts + src, no model weights)
 rm -rf "$DATASET_DIR"
 mkdir -p "$DATASET_DIR"
 cp "$SCRIPT_DIR/dataset-metadata.json" "$DATASET_DIR/"
@@ -29,9 +29,9 @@ cp "$PROJECT_ROOT/src/pii_masking/day4_evaluate.py" "$DATASET_DIR/src/pii_maskin
 [ -f "$PROJECT_ROOT/src/pii_masking/__init__.py" ] && \
     cp "$PROJECT_ROOT/src/pii_masking/__init__.py" "$DATASET_DIR/src/pii_masking/"
 
-echo "Staged dataset size: $(du -sh "$DATASET_DIR" | cut -f1)  (code only — models come from Day 3 kernel)"
+echo "Staged dataset size: $(du -sh "$DATASET_DIR" | cut -f1)  (code only - models come from Day 3 kernel)"
 
-# ── Upload dataset ─────────────────────────────────────────────────────────────
+# Upload dataset
 if kaggle datasets status abdulmuizz28/pii-masking-day5-eval &>/dev/null; then
     echo ""
     echo "=== Updating dataset to new version ==="
@@ -42,7 +42,7 @@ else
     kaggle datasets create -p "$DATASET_DIR" --dir-mode zip
 fi
 
-# ── Push kernel ────────────────────────────────────────────────────────────────
+# Push kernel
 echo ""
 echo "=== Pushing kernel ==="
 cd "$SCRIPT_DIR"

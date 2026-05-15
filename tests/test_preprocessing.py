@@ -1,4 +1,4 @@
-"""Unit tests for preprocessing.py — Strategy B label alignment."""
+"""Unit tests for preprocessing.py - Strategy B label alignment."""
 
 import pytest
 from transformers import AutoTokenizer
@@ -20,9 +20,6 @@ def _tokenize(tokenizer, tokens, ner_tags):
     return tokenize_and_align_labels(examples, tokenizer, LABEL2ID, MAX_LENGTH)
 
 
-# ---------------------------------------------------------------------------
-# Test 1
-# ---------------------------------------------------------------------------
 def test_first_subword_inherits_word_label(tokenizer):
     result = _tokenize(tokenizer, ["John", "Doe"], ["B-PER", "I-PER"])
     labels = result["labels"][0]
@@ -42,15 +39,12 @@ def test_first_subword_inherits_word_label(tokenizer):
     )
 
 
-# ---------------------------------------------------------------------------
-# Test 2
-# ---------------------------------------------------------------------------
 def test_continuation_subword_is_I_not_B(tokenizer):
-    # "Schwarzenegger" splits into multiple subwords with distilbert-base-cased
+    # This token is intentionally chosen because DistilBERT splits it.
     token = "Schwarzenegger"
     enc = tokenizer([token], add_special_tokens=False)
     assert len(enc["input_ids"][0]) > 1, (
-        f"'{token}' did not split into multiple subwords — pick a different test token"
+        f"'{token}' did not split into multiple subwords - pick a different test token"
     )
 
     result = _tokenize(tokenizer, [token], ["B-PER"])
@@ -72,11 +66,8 @@ def test_continuation_subword_is_I_not_B(tokenizer):
         )
 
 
-# ---------------------------------------------------------------------------
-# Test 3
-# ---------------------------------------------------------------------------
 def test_no_minus100_at_first_subword(tokenizer):
-    # Short sentence — no padding issues for real tokens
+    # Real token positions should remain trainable even in short padded inputs.
     result = _tokenize(tokenizer, ["Hello", "world"], ["O", "O"])
     labels = result["labels"][0]
     word_ids = tokenizer(
@@ -91,9 +82,6 @@ def test_no_minus100_at_first_subword(tokenizer):
             )
 
 
-# ---------------------------------------------------------------------------
-# Test 4
-# ---------------------------------------------------------------------------
 def test_special_tokens_are_minus100(tokenizer):
     result = _tokenize(tokenizer, ["Hello"], ["O"])
     labels = result["labels"][0]
@@ -109,9 +97,6 @@ def test_special_tokens_are_minus100(tokenizer):
             )
 
 
-# ---------------------------------------------------------------------------
-# Test 5
-# ---------------------------------------------------------------------------
 def test_email_label_continuations(tokenizer):
     tokens = ["contact", "user@example.com"]
     ner_tags = ["O", "B-EMAIL"]
@@ -137,9 +122,6 @@ def test_email_label_continuations(tokenizer):
         )
 
 
-# ---------------------------------------------------------------------------
-# Test 6
-# ---------------------------------------------------------------------------
 def test_label_length_matches_input_ids(tokenizer):
     sentences = [
         (["Alice", "works", "at", "Google"], ["B-PER", "O", "O", "O"]),

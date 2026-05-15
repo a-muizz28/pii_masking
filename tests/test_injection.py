@@ -40,9 +40,6 @@ def _is_bio_valid(tags: list[str]) -> bool:
     return True
 
 
-# ---------------------------------------------------------------------------
-# test_bio_well_formedness_after_injection
-# ---------------------------------------------------------------------------
 def test_bio_well_formedness_after_injection() -> None:
     """50 random injected train examples must have no orphan I-X tags."""
     path = PROCESSED_DIR / "train_with_emails.parquet"
@@ -60,9 +57,6 @@ def test_bio_well_formedness_after_injection() -> None:
         )
 
 
-# ---------------------------------------------------------------------------
-# test_round_trip_email_recovery
-# ---------------------------------------------------------------------------
 def test_round_trip_email_recovery() -> None:
     """For every injected example, reconstructed email must match stored email."""
     path = PROCESSED_DIR / "train_with_emails.parquet"
@@ -73,10 +67,10 @@ def test_round_trip_email_recovery() -> None:
     df["tokens"] = df["tokens"].apply(list)
     df["ner_tags"] = df["ner_tags"].apply(list)
 
-    # Only rows that have injected email metadata
+    # Restrict the check to rows where the injection step stored source metadata.
     has_email_col = "injected_email_str" in df.columns
     if not has_email_col:
-        pytest.skip("No injected_email_str column — parquet may not contain metadata")
+        pytest.skip("No injected_email_str column - parquet may not contain metadata")
 
     injected_rows = df[df["injected_email_str"].notna()]
 
@@ -86,7 +80,7 @@ def test_round_trip_email_recovery() -> None:
         stored_email: str = row["injected_email_str"]
         multi_token: bool = bool(row.get("injected_email_multi_token", False))
 
-        # Find B-EMAIL position
+        # Rebuild the injected email span from the BIO start position.
         b_email_positions = [i for i, t in enumerate(tags) if t == "B-EMAIL"]
         assert len(b_email_positions) >= 1, "Expected at least one B-EMAIL tag"
         b_pos = b_email_positions[0]
@@ -94,7 +88,7 @@ def test_round_trip_email_recovery() -> None:
         if not multi_token:
             reconstructed = tokens[b_pos]
         else:
-            # local_part @ domain
+            # Multi-token emails are represented as local_part, "@", domain.
             assert b_pos + 2 < len(tokens), "Multi-token email requires 3 slots"
             reconstructed = f"{tokens[b_pos]}@{tokens[b_pos + 2]}"
 
@@ -103,9 +97,6 @@ def test_round_trip_email_recovery() -> None:
         )
 
 
-# ---------------------------------------------------------------------------
-# test_disjoint_domain_pools
-# ---------------------------------------------------------------------------
 def test_disjoint_domain_pools() -> None:
     """Train and test domain pools must be completely disjoint."""
     config = _load_config()
@@ -122,9 +113,6 @@ def test_disjoint_domain_pools() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# test_injection_rate
-# ---------------------------------------------------------------------------
 def test_injection_rate() -> None:
     """Injection rate for train set must be within [0.55, 0.65]."""
     path = PROCESSED_DIR / "train_with_emails.parquet"
@@ -141,7 +129,7 @@ def test_injection_rate() -> None:
         1 for tags in df["ner_tags"] if any(t == "B-EMAIL" for t in tags)
     )
 
-    # Also include val set for a full combined count
+    # Include validation data when present so the configured split rate is tested.
     val_path = PROCESSED_DIR / "val_with_emails.parquet"
     if val_path.exists():
         val_df = pd.read_parquet(val_path, engine="pyarrow")
@@ -160,11 +148,8 @@ def test_injection_rate() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# test_single_vs_multi_token_ratio
-# ---------------------------------------------------------------------------
 def test_single_vs_multi_token_ratio() -> None:
-    """Single-token emails must constitute 85–95% of all injected emails."""
+    """Single-token emails must constitute 85-95% of all injected emails."""
     path = PROCESSED_DIR / "train_with_emails.parquet"
     if not path.exists():
         pytest.skip("train_with_emails.parquet not found")
@@ -186,9 +171,6 @@ def test_single_vs_multi_token_ratio() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# test_validate_example_fixes_orphan_i_per
-# ---------------------------------------------------------------------------
 def test_validate_example_fixes_orphan_i_per() -> None:
     """validate_example must detect and repair an orphan I-PER tag."""
     example = {
@@ -207,9 +189,6 @@ def test_validate_example_fixes_orphan_i_per() -> None:
     )
 
 
-# ---------------------------------------------------------------------------
-# test_length_mismatch_is_invalid
-# ---------------------------------------------------------------------------
 def test_length_mismatch_is_invalid() -> None:
     """An example with mismatched token and tag counts must be marked invalid."""
     example = {

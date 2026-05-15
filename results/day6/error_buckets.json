@@ -1,0 +1,28 @@
+{
+  "approach_A": {
+    "FN_PER": 88,
+    "FN_EMAIL": 1,
+    "FP_PER": 130,
+    "FP_EMAIL": 0,
+    "total_errors": 219,
+    "pct": {
+      "FN_PER": 40.18,
+      "FN_EMAIL": 0.46,
+      "FP_PER": 59.36,
+      "FP_EMAIL": 0.0
+    }
+  },
+  "approach_B": {
+    "FN_PER": 1374,
+    "FN_EMAIL": 707,
+    "FP_PER": 9261,
+    "FP_EMAIL": 3289,
+    "total_errors": 14631,
+    "pct": {
+      "FN_PER": 9.39,
+      "FN_EMAIL": 4.83,
+      "FP_PER": 63.3,
+      "FP_EMAIL": 22.48
+    }
+  }
+}

@@ -89,9 +89,9 @@ def main():
 
     use_fp16 = torch.cuda.is_available()
     if use_fp16:
-        print("GPU detected — enabling fp16.")
+        print("GPU detected - enabling fp16.")
     else:
-        print("No GPU detected — running on CPU.")
+        print("No GPU detected - running on CPU.")
 
     training_args = TrainingArguments(
         output_dir=OUTPUT_DIR,
@@ -101,7 +101,7 @@ def main():
         learning_rate=LR,
         weight_decay=0.01,
         eval_strategy="epoch",
-        save_strategy="no",        # skip optimizer/scheduler saves — smoke test only
+        save_strategy="no",        # skip optimizer/scheduler saves - smoke test only
         load_best_model_at_end=False,
         metric_for_best_model="overall_f1",
         greater_is_better=True,
@@ -161,9 +161,9 @@ def main():
     overall_f1 = val_metrics.get("eval_overall_f1", 0)
     print(f"\nOverall F1: {overall_f1:.4f}")
     if overall_f1 >= 0.75:
-        print("Smoke test PASSED — pipeline is healthy")
+        print("Smoke test PASSED - pipeline is healthy")
     else:
-        print(f"F1={overall_f1:.4f} is below 0.75 — investigate before Day 3")
+        print(f"F1={overall_f1:.4f} is below 0.75 - investigate before Day 3")
         sys.exit(1)
 
 

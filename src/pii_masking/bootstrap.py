@@ -55,6 +55,20 @@ def run_bootstrap(
     n_bootstrap: int = 10_000,
     random_state: int = 42,
 ) -> dict:
+    """Run a paired bootstrap significance test comparing DeBERTa and LLaMA F1.
+
+    Args:
+        deberta_path: Path to JSONL predictions with ``gold_tags`` / ``pred_tags``.
+        llama_path: Path to JSONL predictions with ``ner_tags`` / ``predicted_tags``.
+        out_path: Where to write the JSON result summary.
+        n_bootstrap: Number of bootstrap resamples (default 10 000).
+        random_state: Seed for the Python ``random`` module.
+
+    Returns:
+        Dict with keys: n_sentences, deberta_mean_f1, llama_mean_f1,
+        observed_mean_diff, ci_lower_2_5, ci_upper_97_5, p_value,
+        significant_at_0_05.
+    """
     deberta_rows = _load_jsonl(deberta_path)
     llama_rows = _load_jsonl(llama_path)
 
@@ -87,6 +101,8 @@ def run_bootstrap(
     boot_diffs.sort()
     ci_lower = boot_diffs[int(0.025 * n_bootstrap)]
     ci_upper = boot_diffs[int(0.975 * n_bootstrap)]
+    # One-sided p-value: fraction of bootstrap samples where DeBERTa does NOT beat LLaMA.
+    # Under H0 (no difference), this should be ~0.5; values < 0.05 reject H0.
     p_value = sum(1 for d in boot_diffs if d <= 0) / n_bootstrap
 
     result = {
@@ -113,7 +129,7 @@ if __name__ == "__main__":
     result = run_bootstrap(
         deberta_path=str(root / "predictions/encoder/deberta_s42_predictions.jsonl"),
         llama_path=str(root / "predictions/llm/raw_outputs.jsonl"),
-        out_path=str(root / "results/day7/bootstrap_results.json"),
+        out_path=str(root / "results/day5/bootstrap_results.json"),
         n_bootstrap=10_000,
         random_state=42,
     )

@@ -1,0 +1,11 @@
+{
+  "per_f1": 0.7773930526080642,
+  "email_f1": null,
+  "overall_f1": 0.7773930526080642,
+  "fpr": 0.020505084366968376,
+  "fnr": 0.21493851777999334,
+  "redaction_leak_rate": 0.19271290605794555,
+  "leaked_span_count": 878,
+  "total_pii_span_count": 4556,
+  "model_dir": "/kaggle/input/notebooks/abdulmuizz28/pii-masking-day-3-training/distilbert_seed42/best_model"
+}

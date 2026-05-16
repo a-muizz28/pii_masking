@@ -15,7 +15,7 @@ src_path = os.path.join(_project_root, "src")
 if src_path not in sys.path:
     sys.path.insert(0, src_path)
 
-from pii_masking.day4_llm_inference import LLMPIIPipeline, _parse_failure_log
+from pii_masking.day4_llm_inference import LLMPIIPipeline
 from pii_masking.day4_evaluate import compute_llm_metrics
 
 
@@ -300,9 +300,9 @@ def main() -> None:
     # Persist parse failures separately for auditability.
     failures_path = os.path.join(args.results_dir, "parse_failures.jsonl")
     with open(failures_path, "w", encoding="utf-8") as f:
-        for entry in _parse_failure_log:
+        for entry in pipeline._parse_failure_log:
             f.write(json.dumps(entry) + "\n")
-    print(f"Parse failures saved -> {failures_path} ({len(_parse_failure_log)} entries)")
+    print(f"Parse failures saved -> {failures_path} ({len(pipeline._parse_failure_log)} entries)")
 
     # Load encoder summary metrics for the comparison table.
     day3_summary_path = os.path.join("results", "day3_encoder_training", "training_summary.json")

@@ -1,4 +1,12 @@
-"""Day 2 tokenization and BIO label alignment helpers."""
+"""Day 2 tokenization and BIO label alignment helpers.
+
+Notes
+-----
+Strategy B label alignment: non-first subwords of a word inherit the word-level
+span label as I-X rather than -100 (Strategy A).  This keeps every subword of a
+multi-subword token fully trainable and prevents the model from seeing a B-PER
+immediately followed by -100 gaps inside a single name token.
+"""
 
 from __future__ import annotations
 
@@ -15,7 +23,12 @@ _REMOVE_COLS = {"sequence", "lang", "email_metadata"}
 
 
 def tokenize_and_align_labels(examples, tokenizer, label2id, max_length=256):
-    """Tokenize word-level examples and align BIO labels using Strategy B."""
+    """Tokenize word-level examples and align BIO labels using Strategy B.
+
+    Special tokens and padding positions receive -100 so PyTorch's cross-entropy
+    loss ignores them.  Continuation subwords of the same word receive I-X (not
+    -100) so the full span participates in gradient updates.
+    """
     tokenized = tokenizer(
         examples["tokens"],
         is_split_into_words=True,
@@ -33,10 +46,13 @@ def tokenize_and_align_labels(examples, tokenizer, label2id, max_length=256):
         label_ids = []
         for word_id in word_ids:
             if word_id is None:
+                # [CLS], [SEP], and padding tokens are excluded from the loss.
                 label_ids.append(-100)
             elif word_id != previous_word_id:
                 label_ids.append(label2id[word_labels[word_id]])
             else:
+                # Strategy B: continuation subwords get I-X, preserving the span
+                # across all subword pieces of a single word token.
                 wl = word_labels[word_id]
                 if wl in ("B-PER", "I-PER"):
                     label_ids.append(label2id["I-PER"])
@@ -89,7 +105,6 @@ def validate_alignment(dataset_split, label2id):
     Raises AssertionError with a descriptive message if any invariant is violated.
     """
     valid_ids = {-100, 0, 1, 2, 3, 4}
-    b_labels = {label2id["B-PER"], label2id["B-EMAIL"]}  # {1, 3}
 
     for idx, row in enumerate(dataset_split):
         labels = row["labels"].tolist()

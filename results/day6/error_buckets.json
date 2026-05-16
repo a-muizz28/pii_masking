@@ -1,18 +1,31 @@
 {
-  "approach_A": {
-    "FN_PER": 88,
-    "FN_EMAIL": 1,
-    "FP_PER": 130,
-    "FP_EMAIL": 0,
-    "total_errors": 219,
+  "approach_A_distilbert_s42": {
+    "FN_PER": 94,
+    "FN_EMAIL": 4,
+    "FP_PER": 95,
+    "FP_EMAIL": 2,
+    "total_errors": 195,
     "pct": {
-      "FN_PER": 40.18,
-      "FN_EMAIL": 0.46,
-      "FP_PER": 59.36,
+      "FN_PER": 48.21,
+      "FN_EMAIL": 2.05,
+      "FP_PER": 48.72,
+      "FP_EMAIL": 1.03
+    }
+  },
+  "approach_B_deberta_s7": {
+    "FN_PER": 84,
+    "FN_EMAIL": 0,
+    "FP_PER": 116,
+    "FP_EMAIL": 0,
+    "total_errors": 200,
+    "pct": {
+      "FN_PER": 42.0,
+      "FN_EMAIL": 0.0,
+      "FP_PER": 58.0,
       "FP_EMAIL": 0.0
     }
   },
-  "approach_B": {
+  "approach_C_llama": {
     "FN_PER": 1374,
     "FN_EMAIL": 707,
     "FP_PER": 9261,

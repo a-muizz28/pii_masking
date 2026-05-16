@@ -34,8 +34,8 @@ TEST_DATA_FILE  = ROOT / "data" / "processed" / "test_injected.parquet"
 MODELS_DIR      = ROOT / "models"
 REPORTS_DIR     = ROOT / "reports"
 RESULTS_DIR     = ROOT / "results" / "day5"
-BOOTSTRAP_OUT   = PREDICTIONS_DIR / "bootstrap_results.json"
-RESULTS_JSON    = REPORTS_DIR / "results.json"
+BOOTSTRAP_OUT   = RESULTS_DIR / "bootstrap_results.json"
+RESULTS_JSON    = RESULTS_DIR / "results.json"
 SUMMARY_MD      = RESULTS_DIR / "day5_summary.md"
 
 # Encoder model definitions (adapt as models are added/renamed)
@@ -409,68 +409,83 @@ def _sentence_f1(gold_tags: list[str], pred_tags: list[str]) -> float:
         return 0.0
 
 
-def run_bootstrap(model_predictions: dict) -> dict | None:
-    key_deberta = "deberta_s42"
-    key_llm     = "llm_templateC"
-
-    if key_deberta not in model_predictions:
-        logger.warning("Bootstrap skipped: %s not found in predictions", key_deberta)
-        return None
-    if key_llm not in model_predictions:
-        logger.warning("Bootstrap skipped: %s not found in predictions", key_llm)
-        return None
-
-    deb_records = model_predictions[key_deberta]
-    llm_records = model_predictions[key_llm]
-    n = min(len(deb_records), len(llm_records))
-    logger.info("Bootstrap: %d aligned sentences", n)
-
-    deb_f1s: list[float] = []
+def _run_bootstrap_pair(
+    encoder_records: list[dict],
+    llm_records: list[dict],
+    label: str,
+    n_bootstrap: int = 1000,
+    seed: int = 42,
+) -> dict:
+    """Paired bootstrap between one encoder and LLaMA on aligned records."""
+    n = min(len(encoder_records), len(llm_records))
+    enc_f1s: list[float] = []
     llm_f1s: list[float] = []
     for i in range(n):
-        g  = deb_records[i]["gold_tags"]
-        dp = deb_records[i]["pred_tags"]
+        g  = encoder_records[i]["gold_tags"]
+        ep = encoder_records[i]["pred_tags"]
         lp = llm_records[i]["pred_tags"]
         ng = len(g)
-        dp = (list(dp) + ["O"] * ng)[:ng]
+        ep = (list(ep) + ["O"] * ng)[:ng]
         lp = (list(lp) + ["O"] * ng)[:ng]
-        deb_f1s.append(_sentence_f1(g, dp))
+        enc_f1s.append(_sentence_f1(g, ep))
         llm_f1s.append(_sentence_f1(g, lp))
 
-    observed_diff = float(np.mean(deb_f1s) - np.mean(llm_f1s))
-
-    N_BOOTSTRAP = 1000
-    np.random.seed(42)
+    observed_diff = float(np.mean(enc_f1s) - np.mean(llm_f1s))
+    np.random.seed(seed)
     boot_diffs: list[float] = []
-    for _ in range(N_BOOTSTRAP):
+    for _ in range(n_bootstrap):
         idx = np.random.choice(n, size=n, replace=True)
-        d_boot = np.mean([deb_f1s[i] for i in idx])
-        l_boot = np.mean([llm_f1s[i] for i in idx])
-        boot_diffs.append(float(d_boot - l_boot))
+        boot_diffs.append(
+            float(np.mean([enc_f1s[i] for i in idx]) - np.mean([llm_f1s[i] for i in idx]))
+        )
 
     ci_lower = float(np.percentile(boot_diffs, 2.5))
     ci_upper = float(np.percentile(boot_diffs, 97.5))
     p_value  = float(np.mean([d <= 0.0 for d in boot_diffs]))
-
+    encoder_name = label.split("_vs_")[0]
     interpretation = (
-        "DeBERTa significantly outperforms LLaMA (p < 0.05)"
+        f"{encoder_name} significantly outperforms LLaMA (p < 0.05)"
         if p_value < 0.05
         else f"No significant difference at alpha=0.05 (p = {p_value:.3f})"
     )
-
     return {
-        "comparison":         "deberta_s42_vs_llm_templateC",
-        "observed_diff_f1":   observed_diff,
-        "ci_lower_95":        ci_lower,
-        "ci_upper_95":        ci_upper,
-        "p_value_one_sided":  p_value,
-        "n_bootstrap":        N_BOOTSTRAP,
-        "n_sentences":        n,
-        "interpretation":     interpretation,
+        "comparison":        label,
+        "observed_diff_f1":  observed_diff,
+        "ci_lower_95":       ci_lower,
+        "ci_upper_95":       ci_upper,
+        "p_value_one_sided": p_value,
+        "n_bootstrap":       n_bootstrap,
+        "n_sentences":       n,
+        "interpretation":    interpretation,
     }
 
 
-# Step 6: build reports/results.json
+def run_bootstrap(model_predictions: dict) -> dict | None:
+    key_llm = "llm_templateC"
+    if key_llm not in model_predictions:
+        logger.warning("Bootstrap skipped: %s not found in predictions", key_llm)
+        return None
+
+    results: dict = {}
+    for enc_key, label_suffix in [
+        ("deberta_s7",     "deberta_s7_vs_llm_templateC"),
+        ("distilbert_s42", "distilbert_s42_vs_llm_templateC"),
+    ]:
+        if enc_key not in model_predictions:
+            logger.warning("Bootstrap skipped for %s: not found in predictions", enc_key)
+            continue
+        logger.info("Bootstrap: %s vs LLaMA (%d sentences)", enc_key,
+                    min(len(model_predictions[enc_key]), len(model_predictions[key_llm])))
+        results[enc_key] = _run_bootstrap_pair(
+            model_predictions[enc_key],
+            model_predictions[key_llm],
+            label=label_suffix,
+        )
+
+    return results if results else None
+
+
+# Step 6: build results/day5/results.json
 def build_results_json(
     model_predictions: dict,
     seqeval_res: dict,
@@ -503,7 +518,7 @@ def build_results_json(
     email_f1s = _per_seed("EMAIL", "f1")
     macro_f1s = [seqeval_res.get(k, {}).get("macro_avg", {}).get("f1") for k in deberta_keys]
 
-    ref_key = "deberta_s42"
+    ref_key = "deberta_s7"
     tr = token_res.get(ref_key, {})
     lr = leak_res.get(ref_key, {})
 
@@ -588,7 +603,7 @@ def build_summary_md(
         "# Day 5 Evaluation Summary",
         "",
         f"DeBERTa seeds evaluated: {deb['seeds']}  "
-        f"(token-level rates and leak rate reported for seed 42)",
+        f"(token-level rates and leak rate reported for seed 7)",
         "",
         "## Main Comparison Table",
         "",
@@ -606,16 +621,22 @@ def build_summary_md(
     ]
 
     if bootstrap:
-        sig = "significant" if bootstrap["p_value_one_sided"] < 0.05 else "not significant"
-        lines += [
-            "## Statistical Comparison (DeBERTa vs LLaMA)",
-            "",
-            f"- Observed F1 difference: {bootstrap['observed_diff_f1']:.3f}",
-            f"- 95% CI: [{bootstrap['ci_lower_95']:.3f}, {bootstrap['ci_upper_95']:.3f}]",
-            f"- p-value (one-sided): {bootstrap['p_value_one_sided']:.3f}",
-            f"- Conclusion: {sig} at alpha=0.05",
-            "",
-        ]
+        _label_map = {
+            "deberta_s7":     "DeBERTa-v3-small seed 7",
+            "distilbert_s42": "DistilBERT-base-cased seed 42",
+        }
+        for enc_key, bst in bootstrap.items():
+            sig = "significant" if bst["p_value_one_sided"] < 0.05 else "not significant"
+            enc_label = _label_map.get(enc_key, enc_key)
+            lines += [
+                f"## Statistical Comparison ({enc_label} vs LLaMA)",
+                "",
+                f"- Observed F1 difference: {bst['observed_diff_f1']:.3f}",
+                f"- 95% CI: [{bst['ci_lower_95']:.3f}, {bst['ci_upper_95']:.3f}]",
+                f"- p-value (one-sided): {bst['p_value_one_sided']:.3f}",
+                f"- Conclusion: {sig} at alpha=0.05",
+                "",
+            ]
 
     if warnings:
         lines += ["## Notes", ""]
@@ -710,19 +731,21 @@ def main() -> None:
     print("[DAY 5] Running paired bootstrap (N=1000)...")
     bootstrap = run_bootstrap(model_preds)
     if bootstrap:
-        print(f"  Observed diff : {bootstrap['observed_diff_f1']:.4f}")
-        print(f"  95% CI        : [{bootstrap['ci_lower_95']:.4f}, {bootstrap['ci_upper_95']:.4f}]")
-        print(f"  p-value       : {bootstrap['p_value_one_sided']:.4f}")
-        print(f"  {bootstrap['interpretation']}")
+        for enc_key, bst in bootstrap.items():
+            print(f"  [{enc_key}]")
+            print(f"    Observed diff : {bst['observed_diff_f1']:.4f}")
+            print(f"    95% CI        : [{bst['ci_lower_95']:.4f}, {bst['ci_upper_95']:.4f}]")
+            print(f"    p-value       : {bst['p_value_one_sided']:.4f}")
+            print(f"    {bst['interpretation']}")
         BOOTSTRAP_OUT.parent.mkdir(parents=True, exist_ok=True)
         BOOTSTRAP_OUT.write_text(json.dumps(bootstrap, indent=2), encoding="utf-8")
         print(f"  Saved -> {BOOTSTRAP_OUT}")
     print()
 
     # Step 6
-    print("[DAY 5] Saving reports/results.json...")
+    print("[DAY 5] Saving results/day5/results.json...")
     full_results = build_results_json(model_preds, seqeval_res, token_res, leak_res, bootstrap)
-    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_JSON.write_text(json.dumps(full_results, indent=2), encoding="utf-8")
     print(f"  Saved -> {RESULTS_JSON}")
 

@@ -15,7 +15,6 @@ logging.basicConfig(level=logging.INFO, format="%(message)s")
 logger = logging.getLogger(__name__)
 
 VALID_TAGS = {"O", "B-PER", "I-PER", "B-EMAIL", "I-EMAIL"}
-PUNCT_TOKENS = {".", "!", "?", ";"}
 
 
 def validate_example(example: dict, idx: int) -> dict:

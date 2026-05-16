@@ -12,11 +12,9 @@ def compute_llm_metrics(records: list[dict]) -> dict:
     n_sentences = len(records)
     n_parse_failures = sum(1 for r in records if not r.get("parse_ok", True))
 
-    # Token-level counters per class
     tp_per = fp_per = fn_per = tn_per = 0
     tp_email = fp_email = fn_email = tn_email = 0
 
-    # Redaction leak counters
     total_spans = 0
     leaked_spans = 0
 
@@ -31,7 +29,6 @@ def compute_llm_metrics(records: list[dict]) -> dict:
         true_seqs.append(true_tags)
         pred_seqs.append(pred_tags_aligned)
 
-        # Token-level FPR/FNR
         for t_tag, p_tag in zip(true_tags, pred_tags_aligned):
             is_true_per = t_tag in ("B-PER", "I-PER")
             is_pred_per = p_tag in ("B-PER", "I-PER")
@@ -60,7 +57,6 @@ def compute_llm_metrics(records: list[dict]) -> dict:
         while i < len(true_tags):
             tag = true_tags[i]
             if tag.startswith("B-"):
-                # Start of a ground-truth span
                 span_indices = [i]
                 j = i + 1
                 entity_type = tag[2:]
@@ -75,18 +71,14 @@ def compute_llm_metrics(records: list[dict]) -> dict:
             else:
                 i += 1
 
-    # Span F1 via seqeval
     report = classification_report(
         true_seqs, pred_seqs, mode="strict", scheme=IOB2, output_dict=True, zero_division=0
     )
 
     per_stats = report.get("PER", {})
     email_stats = report.get("EMAIL", {})
-    overall = report.get("macro avg", {})
 
-    # seqeval overall F1
     span_f1_overall_val = report.get("macro avg", {}).get("f1-score", 0.0)
-    # Also check "weighted avg" as fallback - use macro avg as primary
     span_f1_per = float(per_stats.get("f1-score", 0.0))
     span_f1_email = float(email_stats.get("f1-score", 0.0))
 

@@ -4,9 +4,6 @@ import json
 import os
 import re
 import string
-from typing import Optional
-
-_parse_failure_log: list[dict] = []
 
 SYSTEM_PROMPT = (
     "You are a precise PII detection system. Your task is to identify person names and email addresses\n"
@@ -19,10 +16,22 @@ SYSTEM_PROMPT = (
 )
 
 class LLMPIIPipeline:
+    """LLaMA-cpp inference pipeline for zero-shot PII span extraction.
+
+    Prompts the model with a structured JSON request, then parses the response
+    through a three-stage fallback (direct JSON parse -> brace extraction ->
+    regex field recovery) before aligning named entities back to IOB2 token tags.
+    """
+
     def __init__(self, model_path: str, n_ctx: int = 2048, n_threads: int = 4, n_gpu_layers: int = 0):
+        """Load a GGUF model via llama-cpp-python.
+
+        n_gpu_layers=0 runs fully on CPU; set > 0 to offload layers to GPU.
+        """
         from llama_cpp import Llama
         self.llm = Llama(model_path=model_path, n_ctx=n_ctx, n_threads=n_threads,
                          n_gpu_layers=n_gpu_layers, verbose=False)
+        self._parse_failure_log: list[dict] = []
 
     def _build_prompt(self, sentence: str) -> str:
         return (
@@ -40,6 +49,13 @@ class LLMPIIPipeline:
     def _parse_response(
         self, response: str, sentence: str = "", idx: int = -1
     ) -> tuple[list[str], list[str], bool]:
+        """Parse LLM response text into (names, emails, parse_ok).
+
+        Three-stage fallback: (1) direct json.loads on cleaned text,
+        (2) extract largest {...} brace span and retry, (3) regex field
+        recovery for truncated/malformed JSON.  Returns ([], [], False)
+        if all stages fail.
+        """
         text = response.strip()
 
         if text.startswith("assistant"):
@@ -82,7 +98,7 @@ class LLMPIIPipeline:
                     pass
 
         if parsed is None:
-            _parse_failure_log.append(
+            self._parse_failure_log.append(
                 {"idx": idx, "sequence": sentence, "raw_response": response}
             )
             return [], [], False
@@ -99,7 +115,14 @@ class LLMPIIPipeline:
     def _align_to_iob2(
         self, tokens: list[str], names: list[str], emails: list[str]
     ) -> list[str]:
+        """Map extracted entity strings to IOB2 tags over the original token list.
+
+        Emails are aligned first so their tokens are marked before name search.
+        Names whose text is a substring of a parsed email are dropped to avoid
+        double-tagging the local part of an address as both PER and EMAIL.
+        """
         emails_lower = [e.strip().lower() for e in emails]
+        # Drop name candidates whose surface form appears inside an email string.
         names = [n for n in names if not any(n.strip().lower() in e for e in emails_lower)]
 
         tags = ["O"] * len(tokens)
@@ -149,6 +172,7 @@ class LLMPIIPipeline:
         return tags
 
     def predict_sentence(self, tokens: list[str], sequence: str) -> dict:
+        """Run inference on a single sentence and return a result record."""
         prompt = self._build_prompt(sequence)
         response = self.llm(
             prompt,
@@ -176,6 +200,11 @@ class LLMPIIPipeline:
         cache_path: str,
         checkpoint_every: int = 50,
     ) -> list[dict]:
+        """Run inference over a list of records with resume-from-cache support.
+
+        Results are written atomically to cache_path every checkpoint_every
+        new records so partial runs can be resumed without re-processing.
+        """
         processed_indices: set[int] = set()
         cached_results: list[dict] = []
         if os.path.exists(cache_path):

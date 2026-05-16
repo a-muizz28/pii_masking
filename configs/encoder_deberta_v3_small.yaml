@@ -2,4 +2,4 @@ model_name: microsoft/deberta-v3-small
 task: token-classification
 batch_size: 16
 learning_rate: 2e-5
-epochs: 3
+epochs: 5

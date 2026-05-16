@@ -26,7 +26,6 @@ class MaskingPipeline:
                 f"pred_tags length ({len(pred_tags)}) != tokens length ({len(tokens)})"
             )
 
-        # Collect (token_start, token_end_exclusive, entity_type) spans
         spans: list[tuple[int, int, str]] = []
         i = 0
         while i < len(tokens):
@@ -41,7 +40,6 @@ class MaskingPipeline:
             else:
                 i += 1
 
-        # Map each token to its character start/end in the sequence string
         token_char_starts: list[int] = []
         token_char_ends: list[int] = []
         pos = 0
@@ -58,7 +56,6 @@ class MaskingPipeline:
                 token_char_ends.append(idx + len(tok))
                 pos = idx + len(tok)
 
-        # Build (char_start, char_end, placeholder) list, left-to-right, no overlaps
         replacements: list[tuple[int, int, str]] = []
         processed_end = -1
         for t_start, t_end, etype in spans:
@@ -66,7 +63,6 @@ class MaskingPipeline:
                 continue
             char_start = token_char_starts[t_start]
 
-            # Find rightmost valid token in span
             last_valid = t_end - 1
             while last_valid >= t_start and token_char_ends[last_valid] == -1:
                 last_valid -= 1
@@ -110,7 +106,6 @@ class MaskingPipeline:
                 sequence = " ".join(tokens)
                 reconstructed += 1
 
-            # Extract gold entity strings from gold_tags
             gold_entities: list[str] = []
             i = 0
             while i < len(gold_tags):
@@ -130,7 +125,6 @@ class MaskingPipeline:
                 else:
                     i += 1
 
-            # Align pred_tags to gold length
             n = len(gold_tags)
             pred_aligned = (list(pred_tags) + ["O"] * n)[:n]
 

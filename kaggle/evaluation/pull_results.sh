@@ -22,11 +22,11 @@ find "$TMP" -type f | sort
 echo ""
 echo "=== Copying outputs to project ==="
 
-# reports/results.json  (saved to /kaggle/working/reports/results.json)
-if [ -f "$TMP/reports/results.json" ]; then
-    mkdir -p "$PROJECT_ROOT/reports"
-    cp "$TMP/reports/results.json" "$PROJECT_ROOT/reports/results.json"
-    echo "Saved: reports/results.json"
+# results/day5/results.json  (saved to /kaggle/working/results/day5/results.json)
+if [ -f "$TMP/results/day5/results.json" ]; then
+    mkdir -p "$PROJECT_ROOT/results/day5"
+    cp "$TMP/results/day5/results.json" "$PROJECT_ROOT/results/day5/results.json"
+    echo "Saved: results/day5/results.json"
 fi
 
 # results/day5/day5_summary.md  (saved to /kaggle/working/results/day5/day5_summary.md)
@@ -36,11 +36,11 @@ if [ -f "$TMP/results/day5/day5_summary.md" ]; then
     echo "Saved: results/day5/day5_summary.md"
 fi
 
-# predictions/bootstrap_results.json  (saved to /kaggle/working/predictions/bootstrap_results.json)
-if [ -f "$TMP/predictions/bootstrap_results.json" ]; then
-    mkdir -p "$PROJECT_ROOT/predictions"
-    cp "$TMP/predictions/bootstrap_results.json" "$PROJECT_ROOT/predictions/bootstrap_results.json"
-    echo "Saved: predictions/bootstrap_results.json"
+# results/day5/bootstrap_results.json  (saved to /kaggle/working/results/day5/bootstrap_results.json)
+if [ -f "$TMP/results/day5/bootstrap_results.json" ]; then
+    mkdir -p "$PROJECT_ROOT/results/day5"
+    cp "$TMP/results/day5/bootstrap_results.json" "$PROJECT_ROOT/results/day5/bootstrap_results.json"
+    echo "Saved: results/day5/bootstrap_results.json"
 fi
 
 # predictions/encoder/*.jsonl  (saved to /kaggle/working/predictions/encoder/)

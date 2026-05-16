@@ -1,0 +1,172 @@
+[{"stream_name":"stderr","time":6.563914766,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":6.564000954,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":6.5640094,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":6.564013808,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.168482445,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.168514589,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.168520271,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.168524336,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":10.508984812,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.6/43.6 kB 1.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":10.711558326,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 43.6/43.6 kB 1.4 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":31.97104853,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 GB 972.5 kB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":32.17398142,"data":"     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 GB 972.5 kB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.260547834,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 2.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":39.468668836,"data":"   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.5/45.5 kB 2.6 MB/s eta 0:00:00\n"}
+,{"stream_name":"stdout","time":79.27427443,"data":"IN_KAGGLE: True\n"}
+,{"stream_name":"stdout","time":79.274317132,"data":"ROOT: /kaggle/working\n"}
+,{"stream_name":"stdout","time":79.292213573,"data":"Dataset: wikiann/en\n"}
+,{"stream_name":"stdout","time":79.292236463,"data":"Split: test\n"}
+,{"stream_name":"stdout","time":79.292242006,"data":"Results: /kaggle/working/predictions/wikiann\n"}
+,{"stream_name":"stdout","time":79.558476448,"data":"DeBERTa model dir: /kaggle/input/notebooks/abdulmuizz28/pii-masking-day-3-training/deberta_seed7/best_model\n"}
+,{"stream_name":"stdout","time":79.558517354,"data":"DistilBERT model dir: /kaggle/input/notebooks/abdulmuizz28/pii-masking-day-3-training/distilbert_seed42/best_model\n"}
+,{"stream_name":"stdout","time":79.558524985,"data":"LLaMA GGUF: /kaggle/input/notebooks/abdulmuizz28/pii-masking-day-4-llm-inference/models/llama/Llama-3.2-1B-Instruct-Q4_K_M.gguf\n"}
+,{"stream_name":"stderr","time":80.700787198,"data":"TensorFlow version 2.19.0 available.\n"}
+,{"stream_name":"stderr","time":80.700827553,"data":"\n"}
+,{"stream_name":"stderr","time":80.700835037,"data":"TensorFlow version 2.19.0 available.\n"}
+,{"stream_name":"stderr","time":80.703804756,"data":"JAX version 0.7.2 available.\n"}
+,{"stream_name":"stderr","time":80.703829279,"data":"\n"}
+,{"stream_name":"stderr","time":80.703835668,"data":"JAX version 0.7.2 available.\n"}
+,{"stream_name":"stderr","time":82.208651064,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/main/README.md \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":82.208704836,"data":"\n"}
+,{"stream_name":"stderr","time":82.208712081,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/main/README.md \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":82.253587163,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/main/README.md \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":82.253642118,"data":"\n"}
+,{"stream_name":"stderr","time":82.253655366,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/main/README.md \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":82.269397791,"data":"HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/unimelb-nlp/wikiann/f0a3be6dc5564c0cc4150bb660144800a1f539d4/README.md \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":82.269424955,"data":"\n"}
+,{"stream_name":"stderr","time":82.269430211,"data":"HTTP Request: HEAD https://huggingface.co/api/resolve-cache/datasets/unimelb-nlp/wikiann/f0a3be6dc5564c0cc4150bb660144800a1f539d4/README.md \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":82.287805991,"data":"HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/unimelb-nlp/wikiann/f0a3be6dc5564c0cc4150bb660144800a1f539d4/README.md \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":82.287835716,"data":"\n"}
+,{"stream_name":"stderr","time":82.287841333,"data":"HTTP Request: GET https://huggingface.co/api/resolve-cache/datasets/unimelb-nlp/wikiann/f0a3be6dc5564c0cc4150bb660144800a1f539d4/README.md \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":82.34917005,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/wikiann.py \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":82.349205001,"data":"\n"}
+,{"stream_name":"stderr","time":82.349211437,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/wikiann.py \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":82.396082857,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/wikiann.py \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":82.396115262,"data":"\n"}
+,{"stream_name":"stderr","time":82.396120603,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/wikiann.py \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":82.397127165,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":82.397172192,"data":"\n"}
+,{"stream_name":"stderr","time":82.397178376,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":82.398450795,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":82.398478584,"data":"\n"}
+,{"stream_name":"stderr","time":82.398485438,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":82.479067876,"data":"HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/wikiann/wikiann.py \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":82.4791128,"data":"\n"}
+,{"stream_name":"stderr","time":82.479117126,"data":"HTTP Request: HEAD https://s3.amazonaws.com/datasets.huggingface.co/datasets/datasets/wikiann/wikiann.py \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":83.086181537,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/revision/f0a3be6dc5564c0cc4150bb660144800a1f539d4 \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.086243502,"data":"\n"}
+,{"stream_name":"stderr","time":83.086251425,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/revision/f0a3be6dc5564c0cc4150bb660144800a1f539d4 \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.245125546,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/revision/f0a3be6dc5564c0cc4150bb660144800a1f539d4 \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.245217409,"data":"\n"}
+,{"stream_name":"stderr","time":83.245226671,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/revision/f0a3be6dc5564c0cc4150bb660144800a1f539d4 \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.291423581,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/.huggingface.yaml \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.291464981,"data":"\n"}
+,{"stream_name":"stderr","time":83.29147127,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/.huggingface.yaml \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.330786213,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/.huggingface.yaml \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":83.330806358,"data":"\n"}
+,{"stream_name":"stderr","time":83.33081078,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/.huggingface.yaml \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":83.483476631,"data":"HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=wikiann \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":83.483520213,"data":"\n"}
+,{"stream_name":"stderr","time":83.483527354,"data":"HTTP Request: GET https://datasets-server.huggingface.co/info?dataset=wikiann \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":83.537837337,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/ace?recursive=true\u0026expand=false \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.537876423,"data":"\n"}
+,{"stream_name":"stderr","time":83.537881692,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/ace?recursive=true\u0026expand=false \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.590477943,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/ace?recursive=true\u0026expand=false \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.590513193,"data":"\n"}
+,{"stream_name":"stderr","time":83.590518914,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/ace?recursive=true\u0026expand=false \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.631350953,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4?recursive=false\u0026expand=false \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.631396172,"data":"\n"}
+,{"stream_name":"stderr","time":83.631402545,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4?recursive=false\u0026expand=false \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.689608733,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4?recursive=false\u0026expand=false \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.689651232,"data":"\n"}
+,{"stream_name":"stderr","time":83.68965705,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4?recursive=false\u0026expand=false \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.746950782,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/dataset_infos.json \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.746982588,"data":"\n"}
+,{"stream_name":"stderr","time":83.746987564,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/dataset_infos.json \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.79098475,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/dataset_infos.json \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":83.791012537,"data":"\n"}
+,{"stream_name":"stderr","time":83.791018543,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/dataset_infos.json \"HTTP/1.1 404 Not Found\"\n"}
+,{"stream_name":"stderr","time":83.831667025,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en?recursive=true\u0026expand=false \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.831710871,"data":"\n"}
+,{"stream_name":"stderr","time":83.831715542,"data":"HTTP Request: GET https://huggingface.co/api/datasets/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en?recursive=true\u0026expand=false \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.878458381,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en?recursive=true\u0026expand=false \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.878488841,"data":"\n"}
+,{"stream_name":"stderr","time":83.878495466,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/tree/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en?recursive=true\u0026expand=false \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":83.963343554,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/validation-00000-of-00001.parquet \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":83.963383204,"data":"\n"}
+,{"stream_name":"stderr","time":83.963387466,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/validation-00000-of-00001.parquet \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":84.006904912,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/validation-00000-of-00001.parquet \"HTTP/1.1 302 Found\"\n"}
+,{"stream_name":"stderr","time":84.00694639,"data":"\n"}
+,{"stream_name":"stderr","time":84.006952126,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/validation-00000-of-00001.parquet \"HTTP/1.1 302 Found\"\n"}
+,{"stream_name":"stderr","time":84.089307045,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/xet-read-token/f0a3be6dc5564c0cc4150bb660144800a1f539d4 \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":84.089333707,"data":"\n"}
+,{"stream_name":"stderr","time":84.089340225,"data":"HTTP Request: GET https://huggingface.co/api/datasets/unimelb-nlp/wikiann/xet-read-token/f0a3be6dc5564c0cc4150bb660144800a1f539d4 \"HTTP/1.1 200 OK\"\n"}
+,{"stream_name":"stderr","time":85.143273767,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/test-00000-of-00001.parquet \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":85.14332927,"data":"\n"}
+,{"stream_name":"stderr","time":85.143335539,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/test-00000-of-00001.parquet \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":85.186036172,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/test-00000-of-00001.parquet \"HTTP/1.1 302 Found\"\n"}
+,{"stream_name":"stderr","time":85.186069016,"data":"\n"}
+,{"stream_name":"stderr","time":85.186076837,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/test-00000-of-00001.parquet \"HTTP/1.1 302 Found\"\n"}
+,{"stream_name":"stderr","time":85.770115763,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/train-00000-of-00001.parquet \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":85.770153811,"data":"\n"}
+,{"stream_name":"stderr","time":85.770161713,"data":"HTTP Request: HEAD https://huggingface.co/datasets/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/train-00000-of-00001.parquet \"HTTP/1.1 307 Temporary Redirect\"\n"}
+,{"stream_name":"stderr","time":85.815727143,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/train-00000-of-00001.parquet \"HTTP/1.1 302 Found\"\n"}
+,{"stream_name":"stderr","time":85.815753415,"data":"\n"}
+,{"stream_name":"stderr","time":85.815760128,"data":"HTTP Request: HEAD https://huggingface.co/datasets/unimelb-nlp/wikiann/resolve/f0a3be6dc5564c0cc4150bb660144800a1f539d4/en/train-00000-of-00001.parquet \"HTTP/1.1 302 Found\"\n"}
+,{"stream_name":"stdout","time":87.387393847,"data":"Sentences: 3652\n"}
+,{"stream_name":"stdout","time":87.387430618,"data":"Tokens: 29934\n"}
+,{"stream_name":"stdout","time":87.387437737,"data":"PER spans: 4556\n"}
+,{"stream_name":"stdout","time":87.387442574,"data":"EMAIL spans: 0\n"}
+,{"stream_name":"stdout","time":87.387463401,"data":"Saved: /kaggle/working/predictions/wikiann/data_stats.json\n"}
+,{"stream_name":"stdout","time":87.387468629,"data":"Dataset contains no EMAIL spans; EMAIL metrics are reported as null.\n"}
+,{"stream_name":"stdout","time":118.510281739,"data":"DeBERTa  overall_f1: 0.7176763110307415\n"}
+,{"stream_name":"stdout","time":125.722146874,"data":"DistilBERT overall_f1: 0.7773930526080642\n"}
+,{"stream_name":"stderr","time":135.877774927,"data":"llama_context: n_ctx_seq (2048) \u003c n_ctx_train (131072) -- the full capacity of the model will not be utilized\n"}
+,{"stream_name":"stderr","time":135.877828713,"data":"\n"}
+,{"stream_name":"stderr","time":135.877834122,"data":"llama_context: n_ctx_seq (2048) \u003c n_ctx_train (131072) -- the full capacity of the model will not be utilized\n"}
+,{"stream_name":"stdout","time":158.292030021,"data":"Processed 100/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":178.905948889,"data":"Processed 200/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":198.034699494,"data":"Processed 300/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":224.316689444,"data":"Processed 400/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":247.045159192,"data":"Processed 500/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":266.989747388,"data":"Processed 600/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":287.403471351,"data":"Processed 700/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":312.322671088,"data":"Processed 800/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":337.254608136,"data":"Processed 900/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":357.918176932,"data":"Processed 1000/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":381.619441174,"data":"Processed 1100/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":403.622314319,"data":"Processed 1200/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":425.925731167,"data":"Processed 1300/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":446.64533128,"data":"Processed 1400/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":468.758067087,"data":"Processed 1500/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":491.896683203,"data":"Processed 1600/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":514.828449244,"data":"Processed 1700/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":538.791162976,"data":"Processed 1800/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":558.914999838,"data":"Processed 1900/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":586.10277765,"data":"Processed 2000/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":608.538019545,"data":"Processed 2100/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":628.397454174,"data":"Processed 2200/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":649.25784562,"data":"Processed 2300/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":670.402003017,"data":"Processed 2400/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":692.107101308,"data":"Processed 2500/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":715.333778724,"data":"Processed 2600/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":739.823387913,"data":"Processed 2700/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":761.871076198,"data":"Processed 2800/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":781.151319603,"data":"Processed 2900/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":802.828798435,"data":"Processed 3000/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":826.976534693,"data":"Processed 3100/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":852.702760022,"data":"Processed 3200/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":873.899718858,"data":"Processed 3300/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":894.729636716,"data":"Processed 3400/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":922.764805054,"data":"Processed 3500/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":943.01680239,"data":"Processed 3600/3652 sentences (parse failures so far: 0)\n"}
+,{"stream_name":"stdout","time":954.993201846,"data":"Done. Processed 3652 sentences total (parse failures: 0)\n"}
+,{"stream_name":"stderr","time":961.162248042,"data":"/usr/local/lib/python3.12/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":961.162290246,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":961.337798619,"data":"/usr/local/lib/python3.12/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":961.337831219,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":961.928838245,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":962.25756075,"data":"[NbConvertApp] Writing 182481 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":964.584503141,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":965.428160449,"data":"[NbConvertApp] Writing 493457 bytes to __results__.html\n"}
+]

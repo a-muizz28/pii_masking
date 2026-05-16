@@ -28,3 +28,19 @@
 - LLaMA inference is far slower than the encoder baselines even with GPU offload.
 - Parse failures: 0 out of 3650 sentences (see parse_failures.jsonl)
 - No fine-tuning was applied to LLaMA; results reflect zero-shot generalization at 1B scale.
+
+## Parse Failure Rate Caveat
+
+The reported 0.0% parse failure rate reflects the output of a **three-stage fallback parser**:
+
+1. Direct `json.loads` on the cleaned response text.
+2. Brace-extraction: find the outermost `{...}` span and retry `json.loads`.
+3. Regex field recovery: scrape `"names": [...]` and `"emails": [...]` patterns
+   from a partial or truncated JSON fragment.
+
+Stage 3 will return a result even on severely malformed output, as long as the
+field keys and at least one quoted value are present. Consequently, **0 logged
+failures does not mean 0 parsing problems** — it means the fallback caught
+every case and reported success. The quality of stage-3 recoveries was not
+separately audited; a small fraction of "successful" parses may carry corrupted
+entity lists that silently degrade recall.

@@ -1,0 +1,22 @@
+{
+  "deberta_s7": {
+    "comparison": "deberta_s7_vs_llm_templateC",
+    "observed_diff_f1": 0.41737115220335463,
+    "ci_lower_95": 0.4056615980542921,
+    "ci_upper_95": 0.42932154243420384,
+    "p_value_one_sided": 0.0,
+    "n_bootstrap": 1000,
+    "n_sentences": 3650,
+    "interpretation": "deberta_s7 significantly outperforms LLaMA (p < 0.05)"
+  },
+  "distilbert_s42": {
+    "comparison": "distilbert_s42_vs_llm_templateC",
+    "observed_diff_f1": 0.4162679281823225,
+    "ci_lower_95": 0.40454704571121664,
+    "ci_upper_95": 0.4289355864525576,
+    "p_value_one_sided": 0.0,
+    "n_bootstrap": 1000,
+    "n_sentences": 3650,
+    "interpretation": "distilbert_s42 significantly outperforms LLaMA (p < 0.05)"
+  }
+}

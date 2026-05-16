@@ -30,8 +30,7 @@ class EmailGenerator:
         self.role_fraction: float = self.cfg["role_pattern_fraction"]
         # Track last chosen pattern for reporting
         self._last_pattern_name: str = ""
-        # Seed numpy global state for generate_* methods
-        np.random.seed(self.cfg["seed"])
+        self.rng = np.random.default_rng(self.cfg["seed"])
 
     def generate_local_part(self, first: str, last: str) -> str:
         """Generate the local part of an email from a person's name.
@@ -39,18 +38,18 @@ class EmailGenerator:
         Uses role patterns role_pattern_fraction of the time; otherwise picks a
         name-based pattern by weight.
         """
-        if np.random.random() < self.role_fraction:
+        if self.rng.random() < self.role_fraction:
             weights = [rp["weight"] for rp in self.role_patterns]
             total = sum(weights)
             probs = [w / total for w in weights]
-            chosen = self.role_patterns[int(np.random.choice(len(self.role_patterns), p=probs))]
+            chosen = self.role_patterns[int(self.rng.choice(len(self.role_patterns), p=probs))]
             self._last_pattern_name = chosen["name"]
             return chosen["local"]
 
         weights = [p["weight"] for p in self.patterns]
         total = sum(weights)
         probs = [w / total for w in weights]
-        chosen = self.patterns[int(np.random.choice(len(self.patterns), p=probs))]
+        chosen = self.patterns[int(self.rng.choice(len(self.patterns), p=probs))]
         self._last_pattern_name = chosen["name"]
         tmpl = chosen["template"]
 
@@ -59,15 +58,15 @@ class EmailGenerator:
         local = local.replace("{last}", last.lower())
         local = local.replace("{f}", first[0].lower() if first else "x")
         local = local.replace("{l}", last[0].lower() if last else "x")
-        local = local.replace("{year}", str(np.random.randint(1970, 2006)))
-        local = local.replace("{n}", str(np.random.randint(1, 100)))
+        local = local.replace("{year}", str(self.rng.integers(1970, 2006)))
+        local = local.replace("{n}", str(self.rng.integers(1, 100)))
         return local
 
     def generate_domain(self) -> str:
         """Pick a domain: 70% personal, 30% corporate."""
-        if np.random.random() < 0.7:
-            return self.personal_domains[int(np.random.randint(len(self.personal_domains)))]
-        return self.corporate_domains[int(np.random.randint(len(self.corporate_domains)))]
+        if self.rng.random() < 0.7:
+            return self.personal_domains[int(self.rng.integers(len(self.personal_domains)))]
+        return self.corporate_domains[int(self.rng.integers(len(self.corporate_domains)))]
 
     def generate_email(self, first: str, last: str) -> str:
         """Generate a full email address as local@domain.
@@ -153,9 +152,6 @@ def insert_email_into_example(
     tags: list[str] = result["ner_tags"]
     span_start, span_end, _ = per_span
 
-    email_str = "@".join(
-        [email_tokens[0]] if len(email_tokens) == 1 else [email_tokens[0], email_tokens[2]]
-    )
     multi_token = len(email_tokens) == 3
 
     if context == "post_name":
@@ -187,9 +183,6 @@ def insert_email_into_example(
         else:
             tokens.extend(["Email:"] + list(email_tokens))
             tags.extend(["O"] + list(email_tags))
-        b_email_idx = len(tokens) - len(email_tokens) - (1 if tokens[-1] in PUNCT_TOKENS else 0) - (0)
-        # Recalculate: Email: is at position -(len(email_tokens)+1) from tail (before optional punct)
-        # Simpler: find last B-EMAIL
         b_email_idx = next(i for i in range(len(tags) - 1, -1, -1) if tags[i] == "B-EMAIL")
     else:
         raise ValueError(f"Unknown context: {context!r}")
@@ -199,15 +192,13 @@ def insert_email_into_example(
 
     _verify_bio(tokens, tags)
 
+    full_email = email_tokens[0] if not multi_token else f"{email_tokens[0]}@{email_tokens[2]}"
     result["injected_email"] = {
-        "email": email_str if not multi_token else "@".join([email_tokens[0], email_tokens[2]]),
+        "email": full_email,
         "context": context,
         "multi_token": multi_token,
         "inserted_at": b_email_idx,
     }
-    # Always store the full email string
-    full_email = email_tokens[0] if not multi_token else f"{email_tokens[0]}@{email_tokens[2]}"
-    result["injected_email"]["email"] = full_email
 
     return result
 

@@ -10,7 +10,7 @@ import sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from pii_masking.eval_independent import (
+from pii_masking.day7_eval_independent import (
     build_summary,
     compute_metrics,
     inspect_examples,

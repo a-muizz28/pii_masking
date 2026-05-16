@@ -24,25 +24,18 @@ def compute_seqeval_metrics(p, id2label):
         true_labels.append(true_seq)
         pred_labels.append(pred_seq)
 
-    report = classification_report(true_labels, pred_labels, zero_division=0)
-    print("\n" + report)
+    report_str = classification_report(true_labels, pred_labels, zero_division=0)
+    print("\n" + report_str)
 
-    # Per-entity F1: extract from seqeval type-level scores
-    # f1_score with average=None + type_names gives per-class breakdown
-    per_f1 = f1_score(true_labels, pred_labels, average=None, zero_division=0)
-    type_names = sorted({
-        lbl.split("-", 1)[1]
-        for seq in true_labels for lbl in seq if lbl != "O"
-    })
-    per_entity_f1 = dict(zip(type_names, per_f1)) if len(type_names) == len(per_f1) else {}
+    report = classification_report(true_labels, pred_labels, zero_division=0, output_dict=True)
 
     return {
         "overall_precision": precision_score(true_labels, pred_labels, zero_division=0),
         "overall_recall": recall_score(true_labels, pred_labels, zero_division=0),
         "overall_f1": f1_score(true_labels, pred_labels, zero_division=0),
-        "per_f1": per_entity_f1.get("PER", 0.0),
-        "email_f1": per_entity_f1.get("EMAIL", 0.0),
-        "classification_report": report,
+        "per_f1": report.get("PER", {}).get("f1-score", 0.0),
+        "email_f1": report.get("EMAIL", {}).get("f1-score", 0.0),
+        "classification_report": report_str,
     }
 
 

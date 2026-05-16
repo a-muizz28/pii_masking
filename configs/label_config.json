@@ -3,8 +3,6 @@
     "id2label": {"0": "O", "1": "B-PER", "2": "I-PER", "3": "B-EMAIL", "4": "I-EMAIL"},
     "num_labels": 5,
     "ignore_index": -100,
-    "strategy": "B",
     "max_length": 256,
-    "model_name_smoke_test": "distilbert-base-cased",
-    "model_name_primary": "microsoft/deberta-v3-small"
+    "model_name_smoke_test": "distilbert-base-cased"
 }

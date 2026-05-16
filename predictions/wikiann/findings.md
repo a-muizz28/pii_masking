@@ -15,7 +15,7 @@ Entity coverage: PER only; no EMAIL spans are present.
 
 ## OOD Results
 
-| Approach | PER F1 | Token FPR | Token FNR | Redaction Leak Rate |
+| Approach | PER F1 | Token FPR (all PII) | Token FNR (all PII) | Redaction Leak Rate |
 |---|---:|---:|---:|---:|
 | A: DistilBERT-s42 | 0.777 | 0.021 | 0.215 | 19.3% |
 | B: DeBERTa-s7 | 0.718 | 0.016 | 0.274 | 28.0% |

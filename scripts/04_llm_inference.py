@@ -254,12 +254,10 @@ def build_summary_md(llm_metrics: dict, deb: dict, n_sentences: int, elapsed: fl
 def main() -> None:
     args = parse_args()
 
-    # Validate model availability and output directories first.
     ensure_model(args.model_path, args.skip_download)
     os.makedirs(args.results_dir, exist_ok=True)
     os.makedirs(os.path.dirname(os.path.abspath(args.cache_path)), exist_ok=True)
 
-    # Load held-out test records.
     all_records = load_test_records(args.data_path, args.hf_dataset_path)
     if args.limit:
         records = all_records[: args.limit]
@@ -267,7 +265,6 @@ def main() -> None:
         records = all_records
     print(f"Loaded {len(records)} test records.")
 
-    # Initialise pipeline.
     print("Loading LLaMA model ...")
     pipeline = LLMPIIPipeline(
         model_path=args.model_path,
@@ -275,11 +272,9 @@ def main() -> None:
     )
     print("Model loaded.")
 
-    # Run a small parser sanity check unless explicitly skipped.
     if not args.skip_smoke_test:
         run_smoke_test(pipeline, all_records[:3])
 
-    # Run full inference and checkpoint raw model outputs.
     print(f"\nRunning inference on {len(records)} records ...")
     t0 = time.time()
     results = pipeline.predict_batch(
@@ -290,21 +285,18 @@ def main() -> None:
     elapsed = time.time() - t0
     print(f"Inference complete in {elapsed:.1f}s ({elapsed / max(len(records), 1):.2f}s/sent)")
 
-    # Compute span, token, and leak metrics for the LLM outputs.
     metrics = compute_llm_metrics(results)
     metrics_path = os.path.join(args.results_dir, "llm_metrics.json")
     with open(metrics_path, "w", encoding="utf-8") as f:
         json.dump(metrics, f, indent=2)
     print(f"Metrics saved -> {metrics_path}")
 
-    # Persist parse failures separately for auditability.
     failures_path = os.path.join(args.results_dir, "parse_failures.jsonl")
     with open(failures_path, "w", encoding="utf-8") as f:
         for entry in pipeline._parse_failure_log:
             f.write(json.dumps(entry) + "\n")
     print(f"Parse failures saved -> {failures_path} ({len(pipeline._parse_failure_log)} entries)")
 
-    # Load encoder summary metrics for the comparison table.
     day3_summary_path = os.path.join("results", "day3_encoder_training", "training_summary.json")
     deb_stats: dict = {}
     if os.path.exists(day3_summary_path):
@@ -322,7 +314,6 @@ def main() -> None:
             "distilbert": {},
         }
 
-    # Write the markdown summary consumed by the report.
     summary_md = build_summary_md(metrics, deb_stats, len(records), elapsed)
     summary_path = os.path.join(args.results_dir, "day4_summary.md")
     with open(summary_path, "w", encoding="utf-8") as f:
@@ -330,7 +321,6 @@ def main() -> None:
     print(f"\n{summary_md}")
     print(f"Summary saved -> {summary_path}")
 
-    # Emit a compact CLI summary.
     print("\n=== Day 4 Complete ===")
     print(f"LLaMA span F1 overall: {metrics['span_f1_overall']:.3f}")
     print(f"LLaMA span F1 PER:     {metrics['span_f1_per']:.3f}")

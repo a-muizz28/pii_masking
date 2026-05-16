@@ -32,9 +32,22 @@ The numeric prefixes show the order in which the project stages were created and
 | Day 4 | `scripts/04_llm_inference.py`, `notebooks/04_llm_inference.ipynb` | `src/pii_masking/day4_llm_inference.py`, `src/pii_masking/day4_evaluate.py` | LLaMA predictions/cache, `results/day4_llm_inference/llm_metrics.json`, Day 4 summary |
 | Day 5 | `scripts/05_evaluate_all.py`, `src/pii_masking/day5_masking.py` | `src/pii_masking/day5_masking.py` | final comparison metrics, masking leak rate, bootstrap results |
 | Day 6 | `notebooks/06_error_analysis.ipynb`, `scripts/06_error_analysis.py`, `src/pii_masking/day6_error_analysis.py` | `src/pii_masking/day6_error_analysis.py` | error bucket counts, annotation TSVs, error-distribution figure |
-| Day 7 | `notebooks/07_independent_eval.ipynb`, `scripts/07_eval_independent.py`, `src/pii_masking/eval_independent.py` | `src/pii_masking/eval_independent.py` | WikiANN cross-domain metrics |
+| Day 7 | `notebooks/07_independent_eval.ipynb`, `scripts/07_eval_independent.py`, `src/pii_masking/day7_eval_independent.py` | `src/pii_masking/day7_eval_independent.py` | WikiANN cross-domain metrics |
 
 `scripts/` are command-line entrypoints. `src/pii_masking/` contains reusable implementation logic. `notebooks/` documents EDA artifacts and holds Kaggle/GPU experiments. `tests/` validates the reusable source modules.
+
+## Configs
+
+All tuneable values are centralised in `configs/`. No magic numbers are hardcoded in source files.
+
+| File | Loaded by | Keys used |
+|---|---|---|
+| `configs/label_config.json` | `scripts/02_preprocess.py` | `label2id`, `max_length`, `model_name_smoke_test` (tokenizer) |
+| `configs/encoder_distilbert.yaml` | `scripts/02_smoke_test.py` | `model_name`, `batch_size`, `learning_rate` (`epochs` overridden to 1 for the smoke run) |
+| `configs/encoder_deberta_v3_small.yaml` | `notebooks/03_encoder_training.ipynb` (reference) | `model_name`, `batch_size`, `learning_rate`, `epochs` |
+| `configs/llm_template_C.yaml` | `src/pii_masking/day4_llm_inference.py` | `system_prompt`, `temperature` |
+
+To change the LLM prompt, edit `configs/llm_template_C.yaml`. To change encoder hyperparameters for the smoke test, edit `configs/encoder_distilbert.yaml`. Label schema and tokenisation settings live in `configs/label_config.json`.
 
 ## How To Run
 
@@ -52,10 +65,10 @@ Encoder training is implemented in `notebooks/03_encoder_training.ipynb` for Kag
 
 1. Run `scripts/01_validate_data.py` to validate raw WikiNeural JSON, repair BIO issues, split train/validation, and write clean parquet files.
 2. Run `scripts/01_inject_emails.py` to inject synthetic email entities into the clean splits using `data/injection_config.json`.
-3. Run `scripts/02_preprocess.py` to tokenize injected splits and align labels using Strategy B.
-4. Run `scripts/02_smoke_test.py` locally to confirm the encoder pipeline works on a small DistilBERT subset before expensive training.
+3. Run `scripts/02_preprocess.py` to tokenize injected splits and align labels using Strategy B (reads `configs/label_config.json`).
+4. Run `scripts/02_smoke_test.py` locally to confirm the encoder pipeline works on a small DistilBERT subset before expensive training (reads `configs/encoder_distilbert.yaml`).
 5. Run `notebooks/03_encoder_training.ipynb` on Kaggle/GPU for the full DeBERTa/DistilBERT encoder experiments.
-6. Run `scripts/04_llm_inference.py` locally or `notebooks/04_llm_inference.ipynb` on Kaggle/GPU for the LLaMA zero-shot pipeline and Day 4 comparison against encoder metrics.
+6. Run `scripts/04_llm_inference.py` locally or `notebooks/04_llm_inference.ipynb` on Kaggle/GPU for the LLaMA zero-shot pipeline and Day 4 comparison against encoder metrics (prompt and temperature read from `configs/llm_template_C.yaml`).
 7. Run `scripts/05_evaluate_all.py` to produce `results/day5/results.json` and `results/day5/bootstrap_results.json`.
 8. Use `notebooks/06_error_analysis.ipynb` or `scripts/06_error_analysis.py` to compare Approach A, B, and C error buckets.
 9. Use `notebooks/07_independent_eval.ipynb` for the cached WikiANN JSON review, or `scripts/07_eval_independent.py` to regenerate WikiANN metrics.
@@ -68,6 +81,8 @@ Results will be written to:
 - `errors/`
 - `models/`
 - `reports/figures/`
+- `results/day3_encoder_training/training_summary.json`
+- `results/day4_llm_inference/llm_metrics.json`
 - `results/day5/results.json`
 - `results/day5/bootstrap_results.json`
 - `results/day6/error_buckets.json`

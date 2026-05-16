@@ -24,7 +24,11 @@ def main():
 
     label2id = cfg["label2id"]
     max_length = cfg["max_length"]
+    ignore_index = cfg["ignore_index"]
     model_name = cfg["model_name_smoke_test"]
+
+    per_ids = [v for k, v in label2id.items() if "PER" in k]
+    email_ids = [v for k, v in label2id.items() if "EMAIL" in k]
 
     print(f"Loading tokenizer: {model_name}")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -32,7 +36,7 @@ def main():
 
     print("Building DatasetDict (tokenizing all splits)...")
     dataset_dict = build_dataset_dict(
-        TRAIN_PATH, VAL_PATH, TEST_PATH, tokenizer, label2id, max_length
+        TRAIN_PATH, VAL_PATH, TEST_PATH, tokenizer, label2id, max_length, ignore_index
     )
 
     print("\n--- Dataset Stats ---")
@@ -42,12 +46,11 @@ def main():
         avg_len = attn.float().sum(dim=1).mean().item()
 
         labels = torch.stack([split[i]["labels"] for i in range(min(n, 500))])
-        mask = labels != -100
-        real_labels = labels[mask]
+        real_labels = labels[labels != ignore_index]
         total_real = real_labels.numel()
 
-        per_frac = ((real_labels == 1) | (real_labels == 2)).sum().item() / max(total_real, 1)
-        email_frac = ((real_labels == 3) | (real_labels == 4)).sum().item() / max(total_real, 1)
+        per_frac = sum((real_labels == i).sum().item() for i in per_ids) / max(total_real, 1)
+        email_frac = sum((real_labels == i).sum().item() for i in email_ids) / max(total_real, 1)
 
         print(
             f"  {split_name:12s}: {n:5d} examples | avg_len={avg_len:.1f} tokens | "
@@ -55,7 +58,7 @@ def main():
         )
 
     print("\nRunning Strategy B alignment validation on train split...")
-    validate_alignment(dataset_dict["train"], label2id)
+    validate_alignment(dataset_dict["train"], label2id, ignore_index)
 
     print(f"\nSaving DatasetDict to {OUTPUT_PATH} ...")
     dataset_dict.save_to_disk(str(OUTPUT_PATH))

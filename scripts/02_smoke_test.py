@@ -7,6 +7,7 @@ from pathlib import Path
 
 import torch
 import numpy as np
+import yaml
 from datasets import load_from_disk
 from transformers import (
     AutoModelForTokenClassification,
@@ -20,20 +21,28 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from pii_masking.day2_metrics import compute_seqeval_metrics
 
-MODEL_NAME = "distilbert-base-cased"
+_enc_config_path = Path(__file__).resolve().parents[1] / "configs" / "encoder_distilbert.yaml"
+with open(_enc_config_path, encoding="utf-8") as _f:
+    _enc_config = yaml.safe_load(_f)
+
+_lbl_config_path = Path(__file__).resolve().parents[1] / "configs" / "label_config.json"
+with open(_lbl_config_path, encoding="utf-8") as _f:
+    _lbl_config = json.load(_f)
+
+MODEL_NAME = _enc_config["model_name"]
 MAX_LENGTH = 256
-BATCH_SIZE = 16
-LR = 3e-5
-NUM_EPOCHS = 1
+BATCH_SIZE = _enc_config["batch_size"]
+LR = _enc_config["learning_rate"]
+NUM_EPOCHS = 1  # pipeline check only; full training runs 5 epochs
 SEED = 42
 OUTPUT_DIR = "models/smoke_test_distilbert"
 
-# Smoke test only needs pipeline validation; 2500/500 gives 156 steps.
 TRAIN_SUBSET = 2500
 VAL_SUBSET = 500
 
-LABEL2ID = {"O": 0, "B-PER": 1, "I-PER": 2, "B-EMAIL": 3, "I-EMAIL": 4}
-ID2LABEL = {v: k for k, v in LABEL2ID.items()}
+LABEL2ID = _lbl_config["label2id"]
+ID2LABEL = {int(k): v for k, v in _lbl_config["id2label"].items()}
+NUM_LABELS = _lbl_config["num_labels"]
 
 
 def main():
@@ -79,7 +88,7 @@ def main():
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
     model = AutoModelForTokenClassification.from_pretrained(
         MODEL_NAME,
-        num_labels=5,
+        num_labels=NUM_LABELS,
         id2label=ID2LABEL,
         label2id=LABEL2ID,
         ignore_mismatched_sizes=True,

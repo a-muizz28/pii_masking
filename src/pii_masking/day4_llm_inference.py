@@ -4,16 +4,16 @@ import json
 import os
 import re
 import string
+from pathlib import Path
 
-SYSTEM_PROMPT = (
-    "You are a precise PII detection system. Your task is to identify person names and email addresses\n"
-    "in text. Return ONLY a valid JSON object. No explanations. No preamble. No markdown. No commentary.\n"
-    "Rules:\n"
-    "- Extract full names as they appear (e.g., \"John Smith\", not \"John\" and \"Smith\" separately)\n"
-    "- Do NOT extract honorifics like Dr., Mr., Mrs., Prof. as part of the name unless inseparable\n"
-    "- Do NOT extract organizations, locations, or other entities - only person names and emails\n"
-    "- If no names or emails are found, return empty lists"
-)
+import yaml
+
+_CONFIG_PATH = Path(__file__).resolve().parents[2] / "configs" / "llm_template_C.yaml"
+with open(_CONFIG_PATH, encoding="utf-8") as _f:
+    _llm_config = yaml.safe_load(_f)
+
+SYSTEM_PROMPT: str = _llm_config["system_prompt"]
+_TEMPERATURE: float = float(_llm_config["temperature"])
 
 class LLMPIIPipeline:
     """LLaMA-cpp inference pipeline for zero-shot PII span extraction.
@@ -122,7 +122,6 @@ class LLMPIIPipeline:
         double-tagging the local part of an address as both PER and EMAIL.
         """
         emails_lower = [e.strip().lower() for e in emails]
-        # Drop name candidates whose surface form appears inside an email string.
         names = [n for n in names if not any(n.strip().lower() in e for e in emails_lower)]
 
         tags = ["O"] * len(tokens)
@@ -177,7 +176,7 @@ class LLMPIIPipeline:
         response = self.llm(
             prompt,
             max_tokens=256,
-            temperature=0.0,
+            temperature=_TEMPERATURE,
             stop=["<|eot_id|>", "<|end_of_text|>"],
         )
         raw_text = response["choices"][0]["text"]

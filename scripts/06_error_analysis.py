@@ -99,6 +99,9 @@ def main() -> None:
         samples = stratified_sample(instances, max_total=30, seed=42)
         out_path = ERRORS_DIR / f"manual_{approach_key}.tsv"
         print(sample_distribution_str(label, instances, samples))
+        if out_path.exists():
+            print(f"Kept existing manual sheet -> {out_path}\n")
+            continue
         save_tsv(build_tsv_rows(samples, approach_key), out_path)
         print(f"Saved {len(samples)} rows -> {out_path}\n")
 
@@ -108,8 +111,13 @@ def main() -> None:
     print("  FP: org_misclassified_as_per | common_noun | hallucinated_email")
 
     logger.info("Generating error distribution figure...")
-    plot_error_distribution(models, FIGURE_PNG, dpi=150)
-    print(f"\nFigure saved -> {FIGURE_PNG}")
+    try:
+        plot_error_distribution(models, FIGURE_PNG, dpi=150)
+        print(f"\nFigure saved -> {FIGURE_PNG}")
+    except ImportError as exc:
+        logger.warning("Skipping figure generation: %s", exc)
+        print("\nFigure generation skipped because matplotlib is not installed.")
+        print(f"Existing figure, if present, remains at -> {FIGURE_PNG}")
 
     print("\nMarkdown table (copy and paste into report):\n")
     print(markdown_table_str(models))
@@ -121,7 +129,7 @@ Day 6 checklist
 [x] errors/manual_A.tsv              saved  (needs manual sub_label annotation)
 [x] errors/manual_B.tsv              saved  (needs manual sub_label annotation)
 [x] errors/manual_C.tsv              saved  (needs manual sub_label annotation)
-[x] reports/figures/fig1_error_analysis.png  saved
+[x] reports/figures/fig1_error_analysis.png  saved when matplotlib is available
 [ ] MANUAL: open errors/manual_*.tsv and fill sub_label column
 [ ] MANUAL: update error analysis section of report with sub_label counts
 [ ] Day 7: WikiANN cross-domain evaluation and final report review

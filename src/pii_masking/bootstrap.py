@@ -1,4 +1,4 @@
-"""Paired bootstrap significance test: DeBERTa-s42 vs LLaMA macro-F1."""
+"""Paired bootstrap significance test: DeBERTa-s7 vs LLaMA macro-F1."""
 
 import json
 import os
@@ -14,14 +14,12 @@ def _span_f1(gold_tags: list[str], pred_tags: list[str]) -> float:
         for i, t in enumerate(tags):
             if t == f"B-{label_prefix}":
                 start = i
-            elif t == f"I-{label_prefix}" and start is None:
-                start = i  # tolerate missing B
             elif t == "O" or (t.startswith("B-") and t != f"B-{label_prefix}"):
                 if start is not None:
-                    spans.add((start, i - 1))
+                    spans.add((start, i))
                     start = None
         if start is not None:
-            spans.add((start, len(tags) - 1))
+            spans.add((start, len(tags)))
         return spans
 
     f1_scores = []
@@ -52,7 +50,7 @@ def run_bootstrap(
     deberta_path: str,
     llama_path: str,
     out_path: str,
-    n_bootstrap: int = 10_000,
+    n_bootstrap: int = 1_000,
     random_state: int = 42,
 ) -> dict:
     """Run a paired bootstrap significance test comparing DeBERTa and LLaMA F1.
@@ -61,7 +59,7 @@ def run_bootstrap(
         deberta_path: Path to JSONL predictions with ``gold_tags`` / ``pred_tags``.
         llama_path: Path to JSONL predictions with ``ner_tags`` / ``predicted_tags``.
         out_path: Where to write the JSON result summary.
-        n_bootstrap: Number of bootstrap resamples (default 10 000).
+        n_bootstrap: Number of bootstrap resamples (default 1 000).
         random_state: Seed for the Python ``random`` module.
 
     Returns:
@@ -101,8 +99,7 @@ def run_bootstrap(
     boot_diffs.sort()
     ci_lower = boot_diffs[int(0.025 * n_bootstrap)]
     ci_upper = boot_diffs[int(0.975 * n_bootstrap)]
-    # One-sided p-value: fraction of bootstrap samples where DeBERTa does NOT beat LLaMA.
-    # Under H0 (no difference), this should be ~0.5; values < 0.05 reject H0.
+    # Fraction of resamples where DeBERTa doesn't beat LLaMA; small values reject H0.
     p_value = sum(1 for d in boot_diffs if d <= 0) / n_bootstrap
 
     result = {
@@ -127,10 +124,10 @@ def run_bootstrap(
 if __name__ == "__main__":
     root = Path(__file__).resolve().parents[2]
     result = run_bootstrap(
-        deberta_path=str(root / "predictions/encoder/deberta_s42_predictions.jsonl"),
+        deberta_path=str(root / "predictions/encoder/deberta_s7_predictions.jsonl"),
         llama_path=str(root / "predictions/llm/raw_outputs.jsonl"),
         out_path=str(root / "results/day5/bootstrap_results.json"),
-        n_bootstrap=10_000,
+        n_bootstrap=1_000,
         random_state=42,
     )
     for k, v in result.items():

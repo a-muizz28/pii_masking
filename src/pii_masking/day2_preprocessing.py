@@ -3,31 +3,28 @@
 Notes
 -----
 Strategy B label alignment: non-first subwords of a word inherit the word-level
-span label as I-X rather than -100 (Strategy A).  This keeps every subword of a
-multi-subword token fully trainable and prevents the model from seeing a B-PER
-immediately followed by -100 gaps inside a single name token.
+span label as I-X rather than -100 (Strategy A).  This keeps every subword fully
+trainable and prevents the model from seeing a B-PER followed by -100 gaps inside
+a single name token.
 """
 
 from __future__ import annotations
 
 from functools import partial
-from pathlib import Path
 
 import pandas as pd
 from datasets import Dataset, DatasetDict
 
 
-LABEL2ID = {"O": 0, "B-PER": 1, "I-PER": 2, "B-EMAIL": 3, "I-EMAIL": 4}
-
 _REMOVE_COLS = {"sequence", "lang", "email_metadata"}
 
 
-def tokenize_and_align_labels(examples, tokenizer, label2id, max_length=256):
+def tokenize_and_align_labels(examples, tokenizer, label2id, max_length=256, ignore_index=-100):
     """Tokenize word-level examples and align BIO labels using Strategy B.
 
-    Special tokens and padding positions receive -100 so PyTorch's cross-entropy
-    loss ignores them.  Continuation subwords of the same word receive I-X (not
-    -100) so the full span participates in gradient updates.
+    Special tokens and padding positions receive ignore_index so PyTorch's
+    cross-entropy loss skips them.  Continuation subwords get I-X so the full
+    span participates in gradient updates.
     """
     tokenized = tokenizer(
         examples["tokens"],
@@ -47,7 +44,7 @@ def tokenize_and_align_labels(examples, tokenizer, label2id, max_length=256):
         for word_id in word_ids:
             if word_id is None:
                 # [CLS], [SEP], and padding tokens are excluded from the loss.
-                label_ids.append(-100)
+                label_ids.append(ignore_index)
             elif word_id != previous_word_id:
                 label_ids.append(label2id[word_labels[word_id]])
             else:
@@ -67,7 +64,7 @@ def tokenize_and_align_labels(examples, tokenizer, label2id, max_length=256):
     return tokenized
 
 
-def load_and_tokenize_split(parquet_path, tokenizer, label2id, max_length=256):
+def load_and_tokenize_split(parquet_path, tokenizer, label2id, max_length=256, ignore_index=-100):
     """Load a parquet split, tokenize, and return a HF Dataset in torch format."""
     df = pd.read_parquet(parquet_path)
     df["tokens"] = df["tokens"].apply(list)
@@ -82,33 +79,31 @@ def load_and_tokenize_split(parquet_path, tokenizer, label2id, max_length=256):
         tokenizer=tokenizer,
         label2id=label2id,
         max_length=max_length,
+        ignore_index=ignore_index,
     )
     dataset = dataset.map(fn, batched=True, batch_size=256, remove_columns=remove_cols)
     dataset.set_format("torch")
     return dataset
 
 
-def build_dataset_dict(train_path, val_path, test_path, tokenizer, label2id, max_length=256):
+def build_dataset_dict(train_path, val_path, test_path, tokenizer, label2id, max_length=256, ignore_index=-100):
     """Build a DatasetDict with train/validation/test splits."""
     return DatasetDict(
         {
-            "train": load_and_tokenize_split(train_path, tokenizer, label2id, max_length),
-            "validation": load_and_tokenize_split(val_path, tokenizer, label2id, max_length),
-            "test": load_and_tokenize_split(test_path, tokenizer, label2id, max_length),
+            "train": load_and_tokenize_split(train_path, tokenizer, label2id, max_length, ignore_index),
+            "validation": load_and_tokenize_split(val_path, tokenizer, label2id, max_length, ignore_index),
+            "test": load_and_tokenize_split(test_path, tokenizer, label2id, max_length, ignore_index),
         }
     )
 
 
-def validate_alignment(dataset_split, label2id):
-    """Assert Strategy B invariants on a tokenized HF Dataset split.
-
-    Raises AssertionError with a descriptive message if any invariant is violated.
-    """
-    valid_ids = {-100, 0, 1, 2, 3, 4}
+def validate_alignment(dataset_split, label2id, ignore_index=-100):
+    """Assert Strategy B invariants on a tokenized HF Dataset split."""
+    valid_ids = {ignore_index} | set(label2id.values())
+    i_label_ids = {v for k, v in label2id.items() if k.startswith("I-")}
 
     for idx, row in enumerate(dataset_split):
         labels = row["labels"].tolist()
-        attn = row["attention_mask"].tolist()
 
         # Invariant 3: all label values must be in valid set
         for pos, lbl in enumerate(labels):
@@ -116,10 +111,10 @@ def validate_alignment(dataset_split, label2id):
                 f"Example {idx}, pos {pos}: label {lbl} not in {valid_ids}"
             )
 
-        # Invariant 4: first non-(-100) label must not be I-X (i.e. not 2 or 4)
+        # Invariant 4: first real label must not be I-X
         for lbl in labels:
-            if lbl != -100:
-                assert lbl not in (2, 4), (
+            if lbl != ignore_index:
+                assert lbl not in i_label_ids, (
                     f"Example {idx}: first real label is I-X ({lbl}), expected O/B-X"
                 )
                 break

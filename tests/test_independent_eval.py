@@ -5,7 +5,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from pii_masking.eval_independent import (
+from pii_masking.day7_eval_independent import (
     compute_metrics,
     compute_span_leak_rate,
     compute_token_rates,
